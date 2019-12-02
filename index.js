@@ -1,34 +1,51 @@
-const http = require("http");
-const express = require("express");
+const express = require("express"),
+  morgan = require("morgan"),
+  uuid = require("uuid");
 const app = express();
-const morgan = require("morgan");
+const bodyParser = require("body-parser");
+
+let movies = [
+  {
+    Title : "The Breakfast Club",
+    Director: {
+      name: "John Hughes",
+      bio: "An American filmaker best known for writing and directing some of the most successful live-action comedy films of the 1980s and 1990s.",
+      birth: "February 18, 1950",
+      death: "August 6, 2009"
+    },    
+    Genre: {
+      name: "Comedy-Drama",
+      description: "Comedy-drama is a genre in which plot elements are a combination of comedy and drama."
+    },
+  }
+];
+
+let Users = [
+  {  Username: '', 
+  Password: '', 
+  Email: '', 
+  Birthday: '', 
+  Favorites: ['']}
+];
+
+app.use(bodyParser.json());
+// use morgan logger middleware
+app.use(morgan("common"));
+// routes all requests for static files to 'public' folder
+app.use(express.static("public"));
+app.use(function(err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
+});
+
 
 // ---------------------  GET REQUESTS ---------------------//
-
-var myLogger = function(req, res, next) {
-  console.log(req.url);
-  next();
-};
-
-var requestTime = function(req, res, next) {
-  req.requestTime = Date.now();
-  next();
-};
-
-app.use(myLogger);
-app.use(requestTime);
 
 app.get("/", function(req, res) {
   var responseText = "Welcome to my app!";
   responseText += "<small>Requested at: " + req.requestTime + "</small>";
   res.send(responseText);
 });
-app.get("/secreturl", function(req, res) {
-  var responseText = "This is a secret url with super top-secret content.";
-  responseText += "<small>Requested at: " + req.requestTime + "</small>";
-  res.send(responseText);
-});
-app.listen(3000);
 
 // Welcome message
 app.get("/", function(req, res) {
@@ -42,17 +59,132 @@ app.get("/movies", function(req, res) {
   console.log(Movie);
   res.json(top10Movies);
 });
-app.use(express.static("public"));
-app.use(function(err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
+
+// GET movies by title
+app.get("/movies/:Title", (req, res) => {
+  res.json(
+    movies.find(movie => {
+      return movie.Title === req.params.Title;
+    })
+  );
+});
+// GET list of data about directors
+app.get("/movies/:Title/:director", (req, res) => {
+  let movie = movies.find(movie => {
+    return movie.Title === req.params.Title;
+  });
+// GET list of data about genres
+  app.get("/movies/:Title/:genre", (req, res) => {
+    let movie = movies.find(movie => {
+      return movie.Title === req.params.Title;
+    });
+
+    if (movie) {
+      movie.genres[req.params.genre] = req.params.name;
+      res
+        .status(201)
+        .send(
+          "movie name: " +
+            req.params.title +
+            "  add genre name:  " +
+            req.params.name +
+            " in " +
+            req.params.genre
+        );
+    } else {
+      res
+        .status(404)
+        .send("movie with the name " + req.params.title + " was not found.");
+    }
+  });
+
+// ---------------------- USERS ---------------------------
+
+// Gets the list of data about ALL users
+
+app.get("/users", (req, res) => {
+  res.json(Users);
 });
 
-http
-  .createServer((request, response) => {
-    response.writeHead(200, { "Content-Type": "text/plain" });
-    response.end("Movie Database\n");
-  })
-  .listen(8080);
+// Adds data for a new student to our list of users.
+app.post("/users", (req, res) => {
+  let newUser = req.body;
 
-console.log("My first Node test server is running on Port 8080.");
+  if (!newUser.username) {
+    const message = "Missing name in request body";
+    res.status(400).send(message);
+  } else {
+    newUser.id = uuid.v4();
+    Users.push(newUser);
+    res.status(201).send(newUser);
+  }
+});
+
+// Deletes a user from our list by Username
+app.delete("/users/:username", (req, res) => {
+  let user = Users.find((user) => { return user.username === req.params.username });
+
+  if (user) {
+    Users.filter(function(obj) { return obj.username !== req.params.username });
+    res.status(201).send("User " + user.username + "with username" + req.params.username + " was deleted.")
+  }
+});
+
+// Finds a user by username
+
+app.get("/users", (req, res) => {
+  res.json(Users.find( (user) => { return user.username === req.params.username; }));
+});
+
+// Update the user info by username
+app.put("/users/:id", (req, res) => {
+  let user = Users.find((user) => { return user.username === req.params.is });
+  let newUserInfo = req.body;
+
+  if (user && newUserInfo) {
+    newUserInfo.username = user.username;
+    newUserInfo.favorites = user.favorites
+    Object.assign(user, newUserInfo);
+    Users = Users.map((user) => (user.username === newUserInfo.usernamed) ? newUserInfo : user);
+    res.status(201).send(user);
+  } else if (!newUserInfo.name) {
+    const message = 'Missing name in request body';
+    res.status(400).send(message);
+  } else {
+    res.status(404).send('User with username ' + req.params.username + ' was not found.');
+  } 
+});
+
+// Add movie to list of favorites
+app.post('/users/:username/:movie_username', (req, res) => {
+  let user = Users.find((user) => { return user.username === req.params.username; });
+  let movie = Movies.find((movie) => { return movie.username === req.params.movie_username; });
+
+  if (user && movie) {
+    user.favorites = [...new Set([...user.favorites, req.params.movie_username])];
+    res.status(201).send(user);
+  } else if (!movie) {
+    res.status(404).send('Movie with username ' + req.params.movie_username + ' was not found.');
+  } else {
+    res.status(404).send('User with username ' + req.params.username + ' was not found.');
+  }
+});
+
+// Delete movie from list of favorites
+app.delete('/users/:username/:movie_username', (req, res) => {
+  let user = Users.find((user) => { return user.username === req.params.username; });
+  let movie = Movies.find((movie) => { return movie.username === req.params.movie_username; });
+
+  if (user && movie) {
+    user.favorites = user.favorites.filter((movie_username) => { return movie_username !== req.params.movie_username; });
+    res.status(201).send(user);
+  } else if (!movie) {
+    res.status(404).send('Movie with username ' + req.params.movie_username + ' was not found.');
+  } else {
+    res.status(404).send('User with username ' + req.params.username + ' was not found.');
+  }
+});
+
+app.listen(8080, () => {
+  console.log("My Movies API is running on port 8080.");
+});
