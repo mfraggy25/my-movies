@@ -69,16 +69,12 @@ app.get("/movies/:Title", (req, res) => {
   );
 });
 // GET list of data about directors
-app.get("/movies/:Title/:director", (req, res) => {
-  let movie = movies.find(movie => {
-    return movie.Title === req.params.Title;
-  });
+app.get('/directors/:name', (req, res) => {
+  res.json(Directors.find( (director) => { return director.name === req.params.name; }));
+});
 // GET list of data about genres
-  app.get("/movies/:Title/:genre", (req, res) => {
-    let movie = movies.find(movie => {
-      return movie.Title === req.params.Title;
-    });
-
+app.get('/genres/:name', (req, res) => {
+  res.json(Genres.find( (genre) => { return genre.name === req.params.name; }));
     if (movie) {
       movie.genres[req.params.genre] = req.params.name;
       res
