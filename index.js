@@ -1,8 +1,8 @@
 const express = require("express"),
-  morgan = require("morgan"),
+  bodyParser = require("body-parser"),
   uuid = require("uuid");
+const morgan = require("morgan");
 const app = express();
-const bodyParser = require("body-parser");
 
 let Movies = [
   {
@@ -45,12 +45,12 @@ app.get("/directors/:name", (req, res) => {
 });
 
 // GET list of data about genres
-app.get("/genres/:name", (req, res) => {
+app.get("/genre/:name", (req, res) => {
   res.send("Successful GET request returning data on movie genre.");
 });
 
 //GET movie by release year
-app.get("/movie/:release", (req, res) => {
+app.get("/movie/:year", (req, res) => {
   res.send("Successful GET request returning data on movies by release year.");
 });
 // ---------------------- USERS ---------------------------
