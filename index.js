@@ -41,12 +41,6 @@ app.use(function(err, req, res, next) {
 
 // ---------------------  GET REQUESTS ---------------------//
 
-app.get("/", function(req, res) {
-  var responseText = "Welcome to my app!";
-  responseText += "<small>Requested at: " + req.requestTime + "</small>";
-  res.send(responseText);
-});
-
 // Welcome message
 app.get("/", function(req, res) {
   res.send("Movie Database");
