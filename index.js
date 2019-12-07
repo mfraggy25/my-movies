@@ -4,7 +4,7 @@ const express = require("express"),
 const app = express();
 const bodyParser = require("body-parser");
 
-let movies = [
+let Movies = [
   {
     Title : "The Breakfast Club",
     Director: {
@@ -56,25 +56,24 @@ app.get("/documentation", function(req, res) {
 });
 // GET list of data about all movies
 app.get("/movies", function(req, res) {
-  console.log(Movie);
-  res.json(top10Movies);
+  res.json(Movies);
 });
 
 // GET movies by title
 app.get("/movies/:Title", (req, res) => {
   res.json(
-    movies.find(movie => {
-      return movie.Title === req.params.Title;
+    Movies.find(movie => {
+      return movie.Title == req.params.Title;
     })
   );
 });
 // GET list of data about directors
 app.get('/directors/:name', (req, res) => {
-  res.json(Directors.find( (director) => { return director.name === req.params.name; }));
+  res.json(Directors.find( (director) => { return director.name == req.params.name; }));
 });
 // GET list of data about genres
 app.get('/genres/:name', (req, res) => {
-  res.json(Genres.find( (genre) => { return genre.name === req.params.name; }));
+  res.json(Genres.find( (genre) => { return genre.name == req.params.name; }));
     if (movie) {
       movie.genres[req.params.genre] = req.params.name;
       res
@@ -118,7 +117,7 @@ app.post("/users", (req, res) => {
 
 // Deletes a user from our list by Username
 app.delete("/users/:username", (req, res) => {
-  let user = Users.find((user) => { return user.username === req.params.username });
+  let user = Users.find((user) => { return user.username == req.params.username });
 
   if (user) {
     Users.filter(function(obj) { return obj.username !== req.params.username });
@@ -134,14 +133,14 @@ app.get("/users", (req, res) => {
 
 // Update the user info by username
 app.put("/users/:id", (req, res) => {
-  let user = Users.find((user) => { return user.username === req.params.is });
+  let user = Users.find((user) => { return user.username == req.params.is });
   let newUserInfo = req.body;
 
   if (user && newUserInfo) {
     newUserInfo.username = user.username;
     newUserInfo.favorites = user.favorites
     Object.assign(user, newUserInfo);
-    Users = Users.map((user) => (user.username === newUserInfo.usernamed) ? newUserInfo : user);
+    Users = Users.map((user) => (user.username == newUserInfo.usernamed) ? newUserInfo : user);
     res.status(201).send(user);
   } else if (!newUserInfo.name) {
     const message = 'Missing name in request body';
@@ -153,8 +152,8 @@ app.put("/users/:id", (req, res) => {
 
 // Add movie to list of favorites
 app.post('/users/:username/:movie_username', (req, res) => {
-  let user = Users.find((user) => { return user.username === req.params.username; });
-  let movie = Movies.find((movie) => { return movie.username === req.params.movie_username; });
+  let user = Users.find((user) => { return user.username == req.params.username; });
+  let movie = Movies.find((movie) => { return movie.username == req.params.movie_username; });
 
   if (user && movie) {
     user.favorites = [...new Set([...user.favorites, req.params.movie_username])];
@@ -168,8 +167,8 @@ app.post('/users/:username/:movie_username', (req, res) => {
 
 // Delete movie from list of favorites
 app.delete('/users/:username/:movie_username', (req, res) => {
-  let user = Users.find((user) => { return user.username === req.params.username; });
-  let movie = Movies.find((movie) => { return movie.username === req.params.movie_username; });
+  let user = Users.find((user) => { return user.username == req.params.username; });
+  let movie = Movies.find((movie) => { return movie.username == req.params.movie_username; });
 
   if (user && movie) {
     user.favorites = user.favorites.filter((movie_username) => { return movie_username !== req.params.movie_username; });
