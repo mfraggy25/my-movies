@@ -189,3 +189,7 @@ app.delete("/users/:Username", function(req, res) {
       res.status(500).send("Error: " + err);
     });
 });
+
+app.listen(8080, () => { //Listen for requests
+  console.log("My Movies API is running on port 8080.");
+})
