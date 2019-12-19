@@ -82,12 +82,20 @@ app.get("/genre/:name", function(req, res) {
 
 // Gets the list of data about ALL users
 
-app.get("/users", (req, res) => {
-  res.json(Users);
+app.get("/users", function(req, res) {
+  Users.find()
+    .then(function(users) {
+      res.status(201).json(users);
+    })
+    .catch(function(err) {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 // Add new user
 app.post("/users", function(req, res) {
+  console.log('users', req.body)
   Users.findOne({ Username: req.body.Username })
     .then(function(user) {
       if (user) {
@@ -116,6 +124,7 @@ app.post("/users", function(req, res) {
 
 // Update the user info
 app.put("/users/:Username", function(req, res) {
+  console.log('users', req.body)
   Users.findOneAndUpdate(
     { Username: req.params.Username },
     {
@@ -140,6 +149,7 @@ app.put("/users/:Username", function(req, res) {
 
 // Add movie to list of favorites
 app.post("/users/:Username/Movies/:MovieID", function(req, res) {
+  console.log('users', req.body)
   Users.findOneAndUpdate(
     { Username: req.params.Username },
     {
