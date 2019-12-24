@@ -43,10 +43,12 @@ app.get("/movies", function(req, res) {
 });
 
 // GET movies by title
-app.get("/movies/:title", function(req, res) {
-  Movies.findOne({ Title: req.params.Title })
+app.get("/movies/:Title", (req, res) => {
+  Movies.findOne({
+    Title: req.params.Title
+  })
     .then(function(movie) {
-      res.json(movie);
+      res.status(201).json(movie);
     })
     .catch(function(err) {
       console.error(err);
@@ -56,7 +58,7 @@ app.get("/movies/:title", function(req, res) {
 
 // GET list of data about directors
 app.get("/directors/:name", function(req, res) {
-  Movies.findOne({ "Director.Name": req.params.Title })
+  Movies.findOne({ "Director.Name": req.params.name })
     .then(function(movie) {
       res.status(201).send(movie.Director);
     })
@@ -68,7 +70,8 @@ app.get("/directors/:name", function(req, res) {
 
 // GET list of data about genres
 app.get("/genre/:name", function(req, res) {
-  Movies.findOne({ Title: req.params.Title })
+  console.log(Movies.findOne({ Name: req.params.Name }));
+  Movies.findOne({ "Genre.Name": req.params.name })
     .then(function(movie) {
       res.status(201).send(movie.Genre.Name + " : " + movie.Genre.Description);
     })
@@ -95,14 +98,13 @@ app.get("/users", function(req, res) {
 
 // Add new user
 app.post("/users", function(req, res) {
-  console.log('users', req.body)
-  Users.findOne({ Username: req.body.Username })
+  Users.findOne({ Name: req.body.Name })
     .then(function(user) {
       if (user) {
-        return res.status(400).send(req.body.Username + "already exists");
+        return res.status(400).send(req.body.Name + "already exists");
       } else {
         Users.create({
-          Username: req.body.Username,
+          Name: req.body.Name,
           Password: req.body.Password,
           Email: req.body.Email,
           Birthday: req.body.Birthday
@@ -123,19 +125,20 @@ app.post("/users", function(req, res) {
 });
 
 // Update the user info
-app.put("/users/:Username", function(req, res) {
-  console.log('users', req.body)
+app.put("/users/:Name", function(req, res) {
   Users.findOneAndUpdate(
-    { Username: req.params.Username },
+    {
+      Name: req.params.Name
+    },
     {
       $set: {
-        Username: req.body.Username,
+        Name: req.body.Name,
         Password: req.body.Password,
         Email: req.body.Email,
         Birthday: req.body.Birthday
       }
     },
-    { new: true }, // This line makes sure that the updated document is returned
+    { new: true }, // This makes sure the updated document is returned
     function(err, updatedUser) {
       if (err) {
         console.error(err);
@@ -148,14 +151,13 @@ app.put("/users/:Username", function(req, res) {
 });
 
 // Add movie to list of favorites
-app.post("/users/:Username/Movies/:MovieID", function(req, res) {
-  console.log('users', req.body)
+app.post("/users/:Name/Movies/:MovieID", function(req, res) {
   Users.findOneAndUpdate(
-    { Username: req.params.Username },
     {
-      $push: { FavoriteMovies: req.params.MovieID }
+      Name: req.params.Name
     },
-    { new: true }, // This line makes sure that the updated document is returned
+    { $push: { Favorites: req.params.MovieID } },
+    { new: true }, // This makes sure the updated document is returned
     function(err, updatedUser) {
       if (err) {
         console.error(err);
@@ -168,9 +170,9 @@ app.post("/users/:Username/Movies/:MovieID", function(req, res) {
 });
 
 // Delete movie from list of favorites
-app.delete("/users/:username/:movie_username", function(req, res) {
+app.delete("/users/:name/:movie_name", function(req, res) {
   Users.findOneAndUpdate(
-    { Username: req.params.Username },
+    { Name: req.params.Name },
     { $pull: { FavoriteMovies: req.params.MovieID } },
     { new: true }, // This line makes sure that the updated document is returned
     (error, updatedUser) => {
@@ -185,13 +187,15 @@ app.delete("/users/:username/:movie_username", function(req, res) {
 });
 
 // Deregister a user from our list by Username
-app.delete("/users/:Username", function(req, res) {
-  Users.findOneAndRemove({ Username: req.params.Username })
+app.delete("/users/:Name", function(req, res) {
+  Users.findOneAndRemove({
+    Name: req.params.Name
+  })
     .then(function(user) {
       if (!user) {
-        res.status(400).send(req.params.Username + " was not found");
+        res.status(400).send(req.params.Name + " not found!");
       } else {
-        res.status(200).send(req.params.Username + " was deleted.");
+        res.status(200).send(req.params.Name + " successfully deleted!");
       }
     })
     .catch(function(err) {
@@ -200,6 +204,7 @@ app.delete("/users/:Username", function(req, res) {
     });
 });
 
-app.listen(8080, () => { //Listen for requests
+app.listen(8080, () => {
+  //Listen for requests
   console.log("My Movies API is running on port 8080.");
-})
+});
