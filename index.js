@@ -170,15 +170,15 @@ app.post("/users/:Name/Movies/:MovieID", function(req, res) {
 });
 
 // Delete movie from list of favorites
-app.delete("/users/:name/:movie_name", function(req, res) {
+app.delete("/users/:name/Movies/:MovieID", function(req, res) {
   Users.findOneAndUpdate(
     { Name: req.params.Name },
-    { $pull: { FavoriteMovies: req.params.MovieID } },
+    { $pull: { Favorites: req.params.MovieID } },
     { new: true }, // This line makes sure that the updated document is returned
     (error, updatedUser) => {
       if (error) {
         console.error(error);
-        res.status(500).send("Error: " + error);
+        res.status(500).send("Error: " + err);
       } else {
         res.json(updatedUser);
       }
