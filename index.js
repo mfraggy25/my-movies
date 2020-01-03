@@ -123,7 +123,7 @@ app.post("/users", function(req, res) {
   Users.findOne({ Name: req.body.Name })
     .then(function(user) {
       if (user) {
-        return res.status(400).send(req.body.Name + "already exists");
+        return res.status(400).send(req.body.Name + " already used!");
       } else {
         Users.create({
           Name: req.body.Name,
@@ -201,7 +201,7 @@ app.post(
 
 // Delete movie from list of favorites
 app.delete(
-  "/users/:name/movies/:movieID",
+  "/users/:Name/movies/:movieID",
   passport.authenticate("jwt", { session: false }),
   function(req, res) {
     Users.findOneAndUpdate(
