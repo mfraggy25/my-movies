@@ -13,9 +13,11 @@ const { check, validationResult } = require("express-validator");
 const passport = require("passport");
 require("./passport");
 
-mongoose.connect("mongodb://localhost:27017/MyMovies", {
-  useNewUrlParser: true
-});
+//mongoose.connect("mongodb://localhost:27017/MyMovies", {useNewUrlParser: true});
+mongoose.connect(
+  "mongodb+srv://michaelf25:greece1@cluster0-bvujn.mongodb.net/test?retryWrites=true&w=majority",
+  { useNewURLParser: true }
+);
 
 app.use(bodyParser.json());
 // use morgan logger middleware
@@ -276,5 +278,5 @@ app.delete(
 
 var port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", function() {
-console.log("Listening on Port 3000");
+  console.log("Listening on Port 3000");
 });
