@@ -120,13 +120,13 @@ app.get("/users", function(req, res) {
 
 // Add new user
 app.post("/users", function(req, res) {
-  Users.findOne({ Name: req.body.Name })
+  Users.findOne({ Username: req.body.Username })
     .then(function(user) {
       if (user) {
-        return res.status(400).send(req.body.Name + " already used!");
+        return res.status(400).send(req.body.Username + " already used!");
       } else {
         Users.create({
-          Name: req.body.Name,
+          Username: req.body.Username,
           Password: req.body.Password,
           Email: req.body.Email,
           Birthday: req.body.Birthday
@@ -148,16 +148,16 @@ app.post("/users", function(req, res) {
 
 // Update the user info
 app.put(
-  "/users/:Name",
+  "/users/:Username",
   passport.authenticate("jwt", { session: false }),
   function(req, res) {
     Users.findOneAndUpdate(
       {
-        Name: req.params.Name
+        Username: req.params.Username
       },
       {
         $set: {
-          Name: req.body.Name,
+          Username: req.body.Username,
           Password: req.body.Password,
           Email: req.body.Email,
           Birthday: req.body.Birthday
@@ -178,12 +178,12 @@ app.put(
 
 // Add movie to list of favorites
 app.post(
-  "/users/:Name/Movies/:MovieID",
+  "/users/:Username/Movies/:MovieID",
   passport.authenticate("jwt", { session: false }),
   function(req, res) {
     Users.findOneAndUpdate(
       {
-        Name: req.params.Name
+        Username: req.params.Username
       },
       { $push: { Favorites: req.params.MovieID } },
       { new: true }, // This makes sure the updated document is returned
@@ -201,11 +201,11 @@ app.post(
 
 // Delete movie from list of favorites
 app.delete(
-  "/users/:Name/movies/:movieID",
+  "/users/:Username/movies/:movieID",
   passport.authenticate("jwt", { session: false }),
   function(req, res) {
     Users.findOneAndUpdate(
-      { Name: req.params.Name },
+      { Username: req.params.Username },
       { $pull: { Favorites: req.params.MovieID } },
       { new: true }, // This line makes sure that the updated document is returned
       (error, updatedUser) => {
@@ -222,17 +222,17 @@ app.delete(
 
 // Deregister a user from our list by Username
 app.delete(
-  "/users/:Name",
+  "/users/:Username",
   passport.authenticate("jwt", { session: false }),
   function(req, res) {
     Users.findOneAndRemove({
-      Name: req.params.Name
+      Username: req.params.Username
     })
       .then(function(user) {
         if (!user) {
-          res.status(400).send(req.params.Name + " not found!");
+          res.status(400).send(req.params.Username + " not found!");
         } else {
-          res.status(200).send(req.params.Name + " successfully deleted!");
+          res.status(200).send(req.params.Username + " successfully deleted!");
         }
       })
       .catch(function(err) {
