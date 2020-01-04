@@ -15,7 +15,7 @@ require("./passport");
 
 //mongoose.connect("mongodb://localhost:27017/MyMovies", {useNewUrlParser: true});
 mongoose.connect(
-  "mongodb+srv://michaelf25:Greece1!@cluster0-bvujn.mongodb.net/test?retryWrites=true&w=majority",
+  "mongodb+srv://michaelf25:greece1@cluster0-bvujn.mongodb.net/test?retryWrites=true&w=majority",
   { useNewURLParser: true }
 );
 
