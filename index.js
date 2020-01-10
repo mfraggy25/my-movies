@@ -16,7 +16,7 @@ require("./passport");
 //mongoose.connect("mongodb://localhost:27017/MyMovies", {useNewUrlParser: true});
 mongoose.connect(
   "mongodb+srv://michaelf25:greece1@cluster0-bvujn.mongodb.net/test?retryWrites=true&w=majority",
-  { useNewURLParser: true }
+   { useNewURLParser: true }
 );
 
 app.use(bodyParser.json());
@@ -41,31 +41,31 @@ app.get("/", function(req, res) {
   res.send("Movie Database");
 });
 
-// GET list of data about all movies
-// app.get("/movies", passport.authenticate("jwt", { session: true }), function(
-//   req,
-//   res
-// ) {
-//   Movies.find()
-//     .then(function(movies) {
-//       res.status(201).json(movies);
-//     })
-//     .catch(function(error) {
-//       console.error(error);
-//       res.status(500).send("Error: " + error);
-//     });
-// });
-
-app.get("/movies", function(req, res) {
+//GET list of data about all movies
+app.get("/movies", passport.authenticate("jwt", { session: true }), function(
+  req,
+  res
+) {
   Movies.find()
     .then(function(movies) {
       res.status(201).json(movies);
     })
-    .catch(function(err) {
-      console.error(err);
-      res.status(500).send("Error: " + err);
+    .catch(function(error) {
+      console.error(error);
+      res.status(500).send("Error: " + error);
     });
 });
+
+// app.get("/movies", function(req, res) {
+//   Movies.find()
+//     .then(function(movies) {
+//       res.status(201).json(movies);
+//     })
+//     .catch(function(err) {
+//       console.error(err);
+//       res.status(500).send("Error: " + err);
+//     });
+// });
 
 // GET movies by title
 app.get(
