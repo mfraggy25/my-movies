@@ -42,7 +42,7 @@ app.get("/", function(req, res) {
 });
 
 //GET list of data about all movies
-app.get("/movies", passport.authenticate("jwt", { session: true }), function(
+app.get("/movies", passport.authenticate("jwt", { session: false }), function(
   req,
   res
 ) {
