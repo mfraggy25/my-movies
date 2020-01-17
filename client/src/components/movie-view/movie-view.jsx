@@ -14,23 +14,25 @@ export class MovieView extends React.Component {
 
     return (
       <div className="movie-view">
-        <img className="movie-poster" src={movie.ImagePath} />
+        <div className="movie-go-back" onClick={() => onClick()}>
+          Go back to the list of movies
+        </div>
         <div className="movie-title">
-          <span className="label">Title: </span>
-          <span className="value">{movie.Title}</span>
+          <div className="label">Title</div>
+          <div className="value">{movie.Title}</div>
         </div>
         <div className="movie-description">
-          <span className="label">Description: </span>
-          <span className="value">{movie.Description}</span>
+          <div className="label">Description</div>
+          <div className="value">{movie.Description}</div>
         </div>
-
+        <img className="movie-poster" src={movie.ImageUrl} />
         <div className="movie-genre">
-          <span className="label">Genre: </span>
-          <span className="value">{movie.Genre.Name}</span>
+          <div className="label">Genre</div>
+          <div className="value">{movie.Genre.Name}</div>
         </div>
         <div className="movie-director">
-          <span className="label">Director: </span>
-          <span className="value">{movie.Director.Name}</span>
+          <div className="label">Director</div>
+          <div className="value">{movie.Director.Name}</div>
         </div>
       </div>
     );

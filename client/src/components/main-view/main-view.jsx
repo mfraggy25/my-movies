@@ -19,7 +19,7 @@ export class MainView extends React.Component {
 
   componentDidMount() {
     axios
-      .get("<https://movieswithmichaelf.herokuapp.com/movies>")
+      .get("https://movieswithmichaelf.herokuapp.com/movies>")
       .then(response => {
         // Assign the result to the state
         this.setState({
@@ -37,27 +37,16 @@ export class MainView extends React.Component {
     });
   }
 
-  onBackClick(movie) {
-    this.setState({
-      selectedMovie: null
-    });
-  }
-
   render() {
-    // If the state isn't initialized, this will throw on runtime
-    // before the data is initially loaded
     const { movies, selectedMovie } = this.state;
 
-    // Before the movies have been loaded
+    // if movies is not yet loaded
     if (!movies) return <div className="main-view" />;
 
     return (
       <div className="main-view">
         {selectedMovie ? (
-          <MovieView
-            movie={selectedMovie}
-            onClick={button => this.onBackClick()}
-          />
+          <MovieView movie={selectedMovie} />
         ) : (
           movies.map(movie => (
             <MovieCard
