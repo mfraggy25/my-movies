@@ -18,8 +18,9 @@ export class MainView extends React.Component {
   }
 
   componentDidMount() {
+    let url_root = "https://movieswithmichaelf.herokuapp.com";
     axios
-      .get("https://movieswithmichaelf.herokuapp.com/movies>")
+      .get(`${url_root}/movies`)
       .then(response => {
         // Assign the result to the state
         this.setState({

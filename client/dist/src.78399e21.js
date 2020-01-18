@@ -33798,7 +33798,9 @@ function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      _axios.default.get("https://movieswithmichaelf.herokuapp.com/movies>").then(function (response) {
+      var url_root = "https://movieswithmichaelf.herokuapp.com";
+
+      _axios.default.get("".concat(url_root, "/movies")).then(function (response) {
         // Assign the result to the state
         _this2.setState({
           movies: response.data
@@ -33931,7 +33933,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59959" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60961" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
