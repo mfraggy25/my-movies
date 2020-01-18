@@ -33697,11 +33697,6 @@ function (_React$Component) {
       return _react.default.createElement("div", {
         className: "movie-view"
       }, _react.default.createElement("div", {
-        className: "movie-go-back",
-        onClick: function onClick() {
-          return _onClick();
-        }
-      }, "Go back to the list of movies"), _react.default.createElement("div", {
         className: "movie-title"
       }, _react.default.createElement("div", {
         className: "label"
@@ -33728,7 +33723,11 @@ function (_React$Component) {
         className: "label"
       }, "Director"), _react.default.createElement("div", {
         className: "value"
-      }, movie.Director.Name)));
+      }, movie.Director.Name)), _react.default.createElement("button", {
+        onClick: function onClick() {
+          return _onClick();
+        }
+      }, "Back"));
     }
   }]);
 
@@ -33831,7 +33830,10 @@ function (_React$Component) {
       return _react.default.createElement("div", {
         className: "main-view"
       }, selectedMovie ? _react.default.createElement(_movieView.MovieView, {
-        movie: selectedMovie
+        movie: selectedMovie,
+        onClick: function onClick() {
+          return _this3.onMovieClick(null);
+        }
       }) : movies.map(function (movie) {
         return _react.default.createElement(_movieCard.MovieCard, {
           key: movie._id,

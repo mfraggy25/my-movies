@@ -14,9 +14,6 @@ export class MovieView extends React.Component {
 
     return (
       <div className="movie-view">
-        <div className="movie-go-back" onClick={() => onClick()}>
-          Go back to the list of movies
-        </div>
         <div className="movie-title">
           <div className="label">Title</div>
           <div className="value">{movie.Title}</div>
@@ -34,6 +31,7 @@ export class MovieView extends React.Component {
           <div className="label">Director</div>
           <div className="value">{movie.Director.Name}</div>
         </div>
+        <button onClick={() => onClick()}>Back</button>
       </div>
     );
   }
