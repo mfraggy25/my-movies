@@ -36430,7 +36430,9 @@ exports.MovieView = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _propTypes = _interopRequireDefault(require("prop-types"));
+var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
+
+var _Card = _interopRequireDefault(require("react-bootstrap/Card"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36472,42 +36474,20 @@ function (_React$Component) {
     value: function render() {
       var _this$props = this.props,
           movie = _this$props.movie,
-          _onClick = _this$props.onClick;
+          onClick = _this$props.onClick;
       if (!movie) return null;
       return _react.default.createElement("div", {
         className: "movie-view"
-      }, _react.default.createElement("div", {
-        className: "movie-title"
-      }, _react.default.createElement("div", {
-        className: "label"
-      }, "Title"), _react.default.createElement("div", {
-        className: "value"
-      }, movie.Title)), _react.default.createElement("div", {
-        className: "movie-description"
-      }, _react.default.createElement("div", {
-        className: "label"
-      }, "Description"), _react.default.createElement("div", {
-        className: "value"
-      }, movie.Description)), _react.default.createElement("img", {
-        className: "movie-poster",
-        src: movie.ImageUrl
-      }), _react.default.createElement("div", {
-        className: "movie-genre"
-      }, _react.default.createElement("div", {
-        className: "label"
-      }, "Genre"), _react.default.createElement("div", {
-        className: "value"
-      }, movie.Genre.Name)), _react.default.createElement("div", {
-        className: "movie-director"
-      }, _react.default.createElement("div", {
-        className: "label"
-      }, "Director"), _react.default.createElement("div", {
-        className: "value"
-      }, movie.Director.Name)), _react.default.createElement("button", {
-        onClick: function onClick() {
-          return _onClick();
+      }, _react.default.createElement(_Card.default, {
+        style: {
+          width: "18rem"
         }
-      }, "Back"));
+      }, _react.default.createElement(_Card.default.Img, {
+        variant: "top",
+        src: movie.imagepath
+      }), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, movie.title), _react.default.createElement(_Card.default.Title, null, movie.description), _react.default.createElement(_Card.default.Text, null, "Genre: ", movie.genre.name), _react.default.createElement(_Card.default.Text, null, "Director: ", movie.director.name), _react.default.createElement(_Button.default, {
+        variant: "primary"
+      }, "Go back"))));
     }
   }]);
 
@@ -36515,7 +36495,7 @@ function (_React$Component) {
 }(_react.default.Component);
 
 exports.MovieView = MovieView;
-},{"react":"../../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js"}],"components/registration-view/registration-view.scss":[function(require,module,exports) {
+},{"react":"../../node_modules/react/index.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Card":"../node_modules/react-bootstrap/esm/Card.js"}],"components/registration-view/registration-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -36617,7 +36597,8 @@ function RegistrationView(props) {
 }
 
 LoginView.propTypes = {
-  onLoggedIn: _propTypes.default.func.isRequired
+  onLoggedIn: _propTypes.default.func.isRequired,
+  onClick: _propTypes.default.func.isRequired
 };
 },{"react":"../../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","./registration-view.scss":"components/registration-view/registration-view.scss"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
 "use strict";

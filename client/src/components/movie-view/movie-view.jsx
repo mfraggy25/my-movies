@@ -1,5 +1,6 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
 
 export class MovieView extends React.Component {
   constructor() {
@@ -15,24 +16,16 @@ export class MovieView extends React.Component {
 
     return (
       <div className="movie-view">
-        <div className="movie-title">
-          <div className="label">Title</div>
-          <div className="value">{movie.Title}</div>
-        </div>
-        <div className="movie-description">
-          <div className="label">Description</div>
-          <div className="value">{movie.Description}</div>
-        </div>
-        <img className="movie-poster" src={movie.ImageUrl} />
-        <div className="movie-genre">
-          <div className="label">Genre</div>
-          <div className="value">{movie.Genre.Name}</div>
-        </div>
-        <div className="movie-director">
-          <div className="label">Director</div>
-          <div className="value">{movie.Director.Name}</div>
-        </div>
-        <button onClick={() => onClick()}>Back</button>
+        <Card style={{ width: "18rem" }}>
+          <Card.Img variant="top" src={movie.imagepath} />
+          <Card.Body>
+            <Card.Title>{movie.title}</Card.Title>
+            <Card.Title>{movie.description}</Card.Title>
+            <Card.Text>Genre: {movie.genre.name}</Card.Text>
+            <Card.Text>Director: {movie.director.name}</Card.Text>
+            <Button variant="primary">Go back</Button>
+          </Card.Body>
+        </Card>
       </div>
     );
   }
