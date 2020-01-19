@@ -1,5 +1,12 @@
 $primary-color: rgb(24, 212, 81);
 $secondary-color: rgb(38, 35, 51);
-$primary-color: rgb(45, 173, 88);
+$primary-color: rgb(43, 196, 94);
 $secondary-color: rgb(58, 17, 85);
 $font-stack: "Roboto", sans-serif;
+
+.loginContainer {
+  background-color: $primary-color;
+  border-radius: 25px;
+  color: $secondary-color;
+  margin-top: 25px;
+}

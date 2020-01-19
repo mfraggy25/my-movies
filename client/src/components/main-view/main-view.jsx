@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import "./main-view.scss";
 
 import { LoginView } from "../login-view/login-view";
 import { MovieCard } from "../movie-card/movie-card";
@@ -12,10 +13,10 @@ import { RegistrationView } from "../registration-view/registration-view";
 
 export class MainView extends React.Component {
   // One of the "hooks" available in a React Component
-  constructor() {
+  constructor(props) {
     //Call the superclass constructor
     // so React can initialize it
-    super();
+    super(props);
 
     this.state = {
       movies: null,
