@@ -1,11 +1,14 @@
 import React from "react";
 import axios from "axios";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 import { LoginView } from "../login-view/login-view";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
-import { RegistrationView } from '../registration-view/registration-view';
+import { RegistrationView } from "../registration-view/registration-view";
 
 export class MainView extends React.Component {
   // One of the "hooks" available in a React Component
@@ -58,24 +61,29 @@ export class MainView extends React.Component {
 
     return (
       <div className="main-view">
-        {selectedMovie ? (
-          <MovieView
-            movie={selectedMovie}
-            onClick={() => this.onMovieClick(null)}
-          />
-        ) : (
-          movies.map(movie => (
-            <MovieCard
-              key={movie._id}
-              movie={movie}
-              onClick={movie => this.onMovieClick(movie)}
-            />
-          ))
-        )}
+        <Container>
+          <Row>
+            {selectedMovie ? (
+              <MovieView
+                movie={selectedMovie}
+                onClick={() => this.onMovieClick(null)}
+              />
+            ) : (
+              movies.map(movie => (
+                <Col key={movie.id} m={6}>
+                  <MovieCard
+                    key={movie._id}
+                    movie={movie}
+                    onClick={movie => this.onMovieClick(movie)}
+                  />
+                </Col>
+              ))
+            )}
+          </Row>
+        </Container>
       </div>
     );
   }
 }
 
-MainView.propTypes = {
-};
+MainView.propTypes = {};
