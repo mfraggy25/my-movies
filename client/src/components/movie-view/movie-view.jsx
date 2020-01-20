@@ -1,6 +1,8 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import PropTypes from "prop-types";
+import "./movie-view.scss";
 
 export class MovieView extends React.Component {
   constructor() {

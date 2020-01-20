@@ -21,7 +21,8 @@ export class MainView extends React.Component {
     this.state = {
       movies: null,
       selectedMovie: null,
-      user: null
+      user: null,
+      register: false
     };
   }
 
@@ -87,4 +88,4 @@ export class MainView extends React.Component {
   }
 }
 
-MainView.propTypes = {};
+MovieCard.propTypes = {};

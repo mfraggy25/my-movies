@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
 
 // imports for files to bundle
 import "./registration-view.scss";
@@ -12,7 +13,7 @@ export function RegistrationView(props) {
   const [email, setEmail] = useState("");
   const [birthday, setBirthday] = useState("");
 
-  const handleSubmit = e => {
+  const handleRegister = e => {
     e.preventDefault();
     console.log(username, password, birthday, email);
     // Send a request to the server for authentication then call props.onLoggedIn(username)
@@ -50,14 +51,14 @@ export function RegistrationView(props) {
       <Form.Group controlId="formBasicCheckbox">
         <Form.Check type="checkbox" label="I am not a robot" />
       </Form.Group>
-      <Button variant="primary" type="submit">
+      <Button variant="primary" type="submit" onClick={handleRegister}>
         Submit
       </Button>
     </Form>
   );
 }
 
-LoginView.propTypes = {
-  onLoggedIn: PropTypes.func.isRequired,
+RegistrationView.propTypes = {
+  onSignedIn: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired
 };
