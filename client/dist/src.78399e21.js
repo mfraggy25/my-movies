@@ -36415,10 +36415,11 @@ function (_React$Component) {
         variant: "top",
         src: movie.ImagePath
       }), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, movie.Title), _react.default.createElement(_Card.default.Text, null, movie.Description), _react.default.createElement(_Button.default, {
+        variant: "primary",
         onClick: function onClick() {
           return _onClick(movie);
         },
-        variant: "link"
+        className: "movie-card"
       }, "Open")));
     }
   }]);
@@ -36453,8 +36454,6 @@ var _react = _interopRequireDefault(require("react"));
 var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
 
 var _Card = _interopRequireDefault(require("react-bootstrap/Card"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
 
 require("./movie-view.scss");
 
@@ -36498,7 +36497,7 @@ function (_React$Component) {
     value: function render() {
       var _this$props = this.props,
           movie = _this$props.movie,
-          onClick = _this$props.onClick;
+          _onClick = _this$props.onClick;
       if (!movie) return null;
       return _react.default.createElement("div", {
         className: "movie-view"
@@ -36510,7 +36509,11 @@ function (_React$Component) {
         variant: "top",
         src: movie.imagepath
       }), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, movie.title), _react.default.createElement(_Card.default.Title, null, movie.description), _react.default.createElement(_Card.default.Text, null, "Genre: ", movie.genre.name), _react.default.createElement(_Card.default.Text, null, "Director: ", movie.director.name), _react.default.createElement(_Button.default, {
-        variant: "primary"
+        variant: "primary",
+        onClick: function onClick() {
+          return _onClick();
+        },
+        className: "homeButton"
       }, "Go back"))));
     }
   }]);
@@ -36519,7 +36522,7 @@ function (_React$Component) {
 }(_react.default.Component);
 
 exports.MovieView = MovieView;
-},{"react":"../../node_modules/react/index.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Card":"../node_modules/react-bootstrap/esm/Card.js","prop-types":"../node_modules/prop-types/index.js","./movie-view.scss":"components/movie-view/movie-view.scss"}],"components/registration-view/registration-view.scss":[function(require,module,exports) {
+},{"react":"../../node_modules/react/index.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Card":"../node_modules/react-bootstrap/esm/Card.js","./movie-view.scss":"components/movie-view/movie-view.scss"}],"components/registration-view/registration-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -36746,6 +36749,28 @@ function (_React$Component) {
     value: function onLoggedIn(user) {
       this.setState({
         user: user
+      });
+    }
+  }, {
+    key: "onButtonClick",
+    value: function onButtonClick() {
+      this.setState({
+        selectedMovie: null
+      });
+    }
+  }, {
+    key: "onSignedIn",
+    value: function onSignedIn(user) {
+      this.setState({
+        user: user,
+        register: false
+      });
+    }
+  }, {
+    key: "register",
+    value: function register() {
+      this.setState({
+        register: true
       });
     }
   }, {

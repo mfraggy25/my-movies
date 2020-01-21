@@ -53,6 +53,25 @@ export class MainView extends React.Component {
     });
   }
 
+  onButtonClick() {
+    this.setState({
+      selectedMovie: null
+    });
+  }
+
+  onSignedIn(user) {
+    this.setState({
+      user: user,
+      register: false
+    });
+  }
+
+  register() {
+    this.setState({
+      register: true
+    });
+  }
+
   render() {
     const { movies, selectedMovie, user } = this.state;
 
