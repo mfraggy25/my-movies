@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import PropTypes from "prop-types";
+
 import "./login-view.scss";
 
 export function LoginView(props) {
@@ -51,7 +53,7 @@ export function LoginView(props) {
           <Button
             variant="secondary"
             id="registerButton"
-            onClick={handleSubmit}
+            onClick={() => this.onSignedIn()}
           >
             Not registered? Sign up!
           </Button>
@@ -60,3 +62,8 @@ export function LoginView(props) {
     </Container>
   );
 }
+
+LoginView.propTypes = {
+  onSignedIn: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired
+};

@@ -1,14 +1,13 @@
 import React from "react";
 import axios from "axios";
-import PropTypes from "prop-types";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./main-view.scss";
 
-import { LoginView } from "../login-view/login-view";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
+import { LoginView } from "../login-view/login-view";
 import { RegistrationView } from "../registration-view/registration-view";
 
 export class MainView extends React.Component {
@@ -73,9 +72,11 @@ export class MainView extends React.Component {
   }
 
   render() {
-    const { movies, selectedMovie, user } = this.state;
+    const { movies, selectedMovie, user, register } = this.state;
 
     if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
+    if (register)
+      return <RegistrationView onSignedIn={user => this.onSignedIn(user)} />;
 
     // if movies is not yet loaded
     if (!movies) return <div className="main-view" />;
@@ -87,7 +88,7 @@ export class MainView extends React.Component {
             {selectedMovie ? (
               <MovieView
                 movie={selectedMovie}
-                onClick={() => this.onMovieClick(null)}
+                onClick={() => this.onButtonClick()}
               />
             ) : (
               movies.map(movie => (
@@ -106,5 +107,3 @@ export class MainView extends React.Component {
     );
   }
 }
-
-MovieCard.propTypes = {};

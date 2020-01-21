@@ -1,23 +1,21 @@
-import React from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import React from "react";
 import "./movie-view.scss";
 
 export class MovieView extends React.Component {
   constructor() {
     super();
-
     this.state = {};
   }
 
   render() {
     const { movie, onClick } = this.props;
-
     if (!movie) return null;
 
     return (
-      <div className="movie-view">
-        <Card style={{ width: "18rem" }}>
+      <div>
+        <Card style={{ width: "100%" }}>
           <Card.Img variant="top" src={movie.imagepath} />
           <Card.Body>
             <Card.Title>{movie.title}</Card.Title>
