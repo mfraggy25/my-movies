@@ -36466,8 +36466,6 @@ function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) ||
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function LoginView(props) {
-  var _this = this;
-
   var _useState = (0, _react.useState)(""),
       _useState2 = _slicedToArray(_useState, 2),
       username = _useState2[0],
@@ -36522,13 +36520,13 @@ function LoginView(props) {
     variant: "secondary",
     id: "registerButton",
     onClick: function onClick() {
-      return _this.onSignedIn();
+      return props.onClick();
     }
   }, "Not registered? Sign up!"))));
 }
 
 LoginView.propTypes = {
-  onSignedIn: _propTypes.default.func.isRequired,
+  onLoggedIn: _propTypes.default.func.isRequired,
   onClick: _propTypes.default.func.isRequired
 };
 },{"react":"../../node_modules/react/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","prop-types":"../node_modules/prop-types/index.js","./login-view.scss":"components/login-view/login-view.scss"}],"components/registration-view/registration-view.scss":[function(require,module,exports) {
@@ -36545,6 +36543,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.RegistrationView = RegistrationView;
 
 var _react = _interopRequireWildcard(require("react"));
+
+var _Container = _interopRequireDefault(require("react-bootstrap/Container"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
@@ -36595,14 +36595,16 @@ function RegistrationView(props) {
       birthday = _useState8[0],
       setBirthday = _useState8[1];
 
-  var handleRegister = function handleRegister(e) {
+  var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
     console.log(username, password, birthday, email); // Send a request to the server for authentication then call props.onLoggedIn(username)
 
     props.onLoggedIn(username);
   };
 
-  return _react.default.createElement(_Form.default, null, _react.default.createElement(_Form.default.Group, {
+  return _react.default.createElement(_Container.default, {
+    className: "registrationContainer"
+  }, _react.default.createElement(_Form.default, null, _react.default.createElement(_Form.default.Group, {
     controlId: "formBasicEmail"
   }, _react.default.createElement(_Form.default.Label, null, "Email address"), _react.default.createElement(_Form.default.Control, {
     type: "email",
@@ -36650,14 +36652,14 @@ function RegistrationView(props) {
     variant: "primary",
     type: "submit",
     onClick: handleSubmit
-  }, "Submit"));
+  }, "Submit")));
 }
 
 RegistrationView.propTypes = {
   onSignedIn: _propTypes.default.func.isRequired,
   onClick: _propTypes.default.func.isRequired
 };
-},{"react":"../../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","axios":"../node_modules/axios/index.js","./registration-view.scss":"components/registration-view/registration-view.scss"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
+},{"react":"../../node_modules/react/index.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","axios":"../node_modules/axios/index.js","./registration-view.scss":"components/registration-view/registration-view.scss"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36720,7 +36722,7 @@ function (_React$Component) {
     // so React can initialize it
     _this = _possibleConstructorReturn(this, _getPrototypeOf(MainView).call(this, props));
     _this.state = {
-      movies: null,
+      movies: [],
       selectedMovie: null,
       user: null,
       register: false
@@ -36790,12 +36792,18 @@ function (_React$Component) {
           selectedMovie = _this$state.selectedMovie,
           user = _this$state.user,
           register = _this$state.register;
-      if (!user) return _react.default.createElement(_loginView.LoginView, {
+      if (!user && register === false) return _react.default.createElement(_loginView.LoginView, {
+        onClick: function onClick() {
+          return _this3.register();
+        },
         onLoggedIn: function onLoggedIn(user) {
           return _this3.onLoggedIn(user);
         }
       });
       if (register) return _react.default.createElement(_registrationView.RegistrationView, {
+        onClick: function onClick() {
+          return _this3.alreadyMember();
+        },
         onSignedIn: function onSignedIn(user) {
           return _this3.onSignedIn(user);
         }
@@ -36813,8 +36821,8 @@ function (_React$Component) {
         }
       }) : movies.map(function (movie) {
         return _react.default.createElement(_Col.default, {
-          key: movie.id,
-          m: 6
+          key: movie._id,
+          m: 4
         }, _react.default.createElement(_movieCard.MovieCard, {
           key: movie._id,
           movie: movie,

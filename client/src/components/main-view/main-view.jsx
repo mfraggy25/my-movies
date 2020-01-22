@@ -18,7 +18,7 @@ export class MainView extends React.Component {
     super(props);
 
     this.state = {
-      movies: null,
+      movies: [],
       selectedMovie: null,
       user: null,
       register: false
@@ -74,9 +74,21 @@ export class MainView extends React.Component {
   render() {
     const { movies, selectedMovie, user, register } = this.state;
 
-    if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
+    if (!user && register === false)
+      return (
+        <LoginView
+          onClick={() => this.register()}
+          onLoggedIn={user => this.onLoggedIn(user)}
+        />
+      );
+
     if (register)
-      return <RegistrationView onSignedIn={user => this.onSignedIn(user)} />;
+      return (
+        <RegistrationView
+          onClick={() => this.alreadyMember()}
+          onSignedIn={user => this.onSignedIn(user)}
+        />
+      );
 
     // if movies is not yet loaded
     if (!movies) return <div className="main-view" />;
@@ -92,7 +104,7 @@ export class MainView extends React.Component {
               />
             ) : (
               movies.map(movie => (
-                <Col key={movie.id} m={6}>
+                <Col key={movie._id} m={4}>
                   <MovieCard
                     key={movie._id}
                     movie={movie}

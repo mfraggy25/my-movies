@@ -53,7 +53,7 @@ export function LoginView(props) {
           <Button
             variant="secondary"
             id="registerButton"
-            onClick={() => this.onSignedIn()}
+            onClick={() => props.onClick()}
           >
             Not registered? Sign up!
           </Button>
@@ -64,6 +64,6 @@ export function LoginView(props) {
 }
 
 LoginView.propTypes = {
-  onSignedIn: PropTypes.func.isRequired,
+  onLoggedIn: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired
 };
