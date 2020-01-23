@@ -35650,7 +35650,7 @@ function (_React$Component) {
       if (!movie) return null;
       return _react.default.createElement("div", null, _react.default.createElement(_Card.default, {
         style: {
-          width: "100%"
+          width: "50%"
         }
       }, _react.default.createElement(_Card.default.Img, {
         variant: "top",
@@ -36652,7 +36652,12 @@ function RegistrationView(props) {
     variant: "primary",
     type: "submit",
     onClick: handleSubmit
-  }, "Submit")));
+  }, "Submit"), _react.default.createElement(_Button.default, {
+    variant: "secondary",
+    onClick: function onClick() {
+      return props.onClick();
+    }
+  }, "Already registered?")));
 }
 
 RegistrationView.propTypes = {
@@ -36780,6 +36785,13 @@ function (_React$Component) {
     value: function register() {
       this.setState({
         register: true
+      });
+    }
+  }, {
+    key: "alreadyMember",
+    value: function alreadyMember() {
+      this.setState({
+        register: false
       });
     }
   }, {
@@ -36923,7 +36935,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65013" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49962" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
