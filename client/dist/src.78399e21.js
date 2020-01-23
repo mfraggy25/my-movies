@@ -35655,7 +35655,7 @@ function (_React$Component) {
       }, _react.default.createElement(_Card.default.Img, {
         variant: "top",
         src: movie.imagepath
-      }), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, movie.title), _react.default.createElement(_Card.default.Title, null, movie.description), _react.default.createElement(_Card.default.Text, null, "Genre: ", movie.genre.name), _react.default.createElement(_Card.default.Text, null, "Director: ", movie.director.name), _react.default.createElement(_Button.default, {
+      }), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, movie.Title), _react.default.createElement(_Card.default.Title, null, movie.Description), _react.default.createElement(_Card.default.Text, null, "Genre: ", movie.Genre.Name), _react.default.createElement(_Card.default.Text, null, "Director: ", movie.Director.Name), _react.default.createElement(_Card.default.Text, null, "Director Bio: ", movie.Director.Bio), _react.default.createElement(_Button.default, {
         variant: "primary",
         onClick: function onClick() {
           return _onClick();

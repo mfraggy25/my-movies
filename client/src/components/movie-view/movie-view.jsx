@@ -18,10 +18,11 @@ export class MovieView extends React.Component {
         <Card style={{ width: "100%" }}>
           <Card.Img variant="top" src={movie.imagepath} />
           <Card.Body>
-            <Card.Title>{movie.title}</Card.Title>
-            <Card.Title>{movie.description}</Card.Title>
-            <Card.Text>Genre: {movie.genre.name}</Card.Text>
-            <Card.Text>Director: {movie.director.name}</Card.Text>
+            <Card.Title>{movie.Title}</Card.Title>
+            <Card.Title>{movie.Description}</Card.Title>
+            <Card.Text>Genre: {movie.Genre.Name}</Card.Text>
+            <Card.Text>Director: {movie.Director.Name}</Card.Text>
+            <Card.Text>Director Bio: {movie.Director.Bio}</Card.Text>
             <Button
               variant="primary"
               onClick={() => onClick()}
