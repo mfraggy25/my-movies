@@ -25,19 +25,29 @@ export class MainView extends React.Component {
     };
   }
 
-  componentDidMount() {
-    let url_root = "https://movieswithmichaelf.herokuapp.com";
-    axios
-      .get(`${url_root}/movies`)
-      .then(response => {
-        // Assign the result to the state
-        this.setState({
-          movies: response.data
-        });
-      })
-      .catch(function(error) {
-        console.log(error);
+  getMovies(token) {
+    axios.get('https://movieswithmichaelf.herokuapp.com/movies', {
+      headers: { Authorization: `Bearer ${token}`}
+    })
+    .then(response => {
+      // Assign the result to the state
+      this.setState({
+        movies: response.data
       });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+  componentDidMount() {
+    let accessToken = localStorage.getItem('token');
+    if (accessToken !== null) {
+      this.setState({
+        user: localStorage.getItem('user')
+      });
+      this.getMovies(accessToken);
+    }
   }
 
   onMovieClick(movie) {
@@ -55,21 +65,6 @@ export class MainView extends React.Component {
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
     this.getMovies(authData.token);
-  }
-
-  getMovies(token) {
-    axios.get('https://movieswithmichaelf.herokuapp.com/movies', {
-      headers: { Authorization: `Bearer ${token}`}
-    })
-    .then(response => {
-      // Assign the result to the state
-      this.setState({
-        movies: response.data
-      });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
   }
 
   onButtonClick() {
