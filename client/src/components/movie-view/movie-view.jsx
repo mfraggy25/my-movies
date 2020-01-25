@@ -3,6 +3,8 @@ import Card from "react-bootstrap/Card";
 import React from "react";
 import "./movie-view.scss";
 
+import { Link } from "react-router-dom";
+
 export class MovieView extends React.Component {
   constructor() {
     super();
@@ -23,6 +25,13 @@ export class MovieView extends React.Component {
             <Card.Text>Genre: {movie.Genre.Name}</Card.Text>
             <Card.Text>Director: {movie.Director.Name}</Card.Text>
             <Card.Text>Director Bio: {movie.Director.Bio}</Card.Text>
+            <Link to={`/directors/${movie.Director.Name}`}>
+              <Button variant="link">Director</Button>
+            </Link>
+
+            <Link to={`/genres/${movie.Genre.Name}`}>
+              <Button variant="link">Genre</Button>
+            </Link>
             <Button
               variant="primary"
               onClick={() => onClick()}
