@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { BrowserRouter as Router, Route} from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -48,12 +49,6 @@ export class MainView extends React.Component {
       });
       this.getMovies(accessToken);
     }
-  }
-
-  onMovieClick(movie) {
-    this.setState({
-      selectedMovie: movie
-    });
   }
 
   onLoggedIn(authData) {
@@ -115,28 +110,20 @@ export class MainView extends React.Component {
     if (!movies) return <div className="main-view" />;
 
     return (
-      <div className="main-view">
-        <Container>
-          <Row>
-            {selectedMovie ? (
-              <MovieView
-                movie={selectedMovie}
-                onClick={() => this.onButtonClick()}
-              />
-            ) : (
-              movies.map(movie => (
-                <Col key={movie._id} m={4}>
-                  <MovieCard
-                    key={movie._id}
-                    movie={movie}
-                    onClick={movie => this.onMovieClick(movie)}
-                  />
-                </Col>
-              ))
-            )}
-          </Row>
-        </Container>
-      </div>
+      <Router>
+         <div className="main-view">
+          <Route exact path="/" render={() => movies.map(m => <MovieCard key={m._id} movie={m}/>)}/>
+          <Route path="/movies/:movieId" render={({match}) => <MovieView movie={movies.find(m => m._id === match.params.movieId)}/>}/>
+          <Route path="/genres/:name" render={({ match }) => {
+  if (!movies) return <div className="main-view"/>;
+  return <GenreView director={movies.find(m => m.Genre.Name === match.params.name).Genre}/>}
+} />
+          <Route path="/directors/:name" render={({ match }) => {
+  if (!movies) return <div className="main-view"/>;
+  return <DirectorView director={movies.find(m => m.Director.Name === match.params.name).Director}/>}
+} />
+         </div>
+      </Router>
     );
   }
 }
