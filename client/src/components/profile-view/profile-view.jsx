@@ -2,7 +2,8 @@ import React from 'react';
 import axios from 'axios';
 
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 import './profile-view.scss'
 
@@ -19,6 +20,16 @@ export class ProfileView extends React.Component {
             favorites: []
         };
     }
+
+    componentDidMount() {
+      let accessToken = localStorage.getItem('token');
+      if (accessToken !== null) {
+          this.getUserProfile(accessToken);
+      }
+  }
+    handleChange(event) {
+        this.setState({ [event.target.name]: event.target.value });
+  }
 
     getUserProfile (token) {
         axios.get(`https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem('user')}`, {
@@ -38,6 +49,23 @@ export class ProfileView extends React.Component {
             });
     }
     
+    addToFavorites(e) {
+      const { movie } = this.props;
+      e.preventDefault();
+      axios.post(
+        `https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem('user')}/Movies/${movie._id}`,
+        { username: localStorage.getItem('user') },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        })
+        .then(res => {
+          alert(`${movie.Title} successfully added to your favorites`);
+        })
+        .catch(error => {
+          alert(`${movie.Title} not added to your favorites` + error)
+        });
+    }
+
     deleteFavorite(movieId) {
         axios.delete(`https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem('user')}/Movies/${movieId}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
@@ -80,3 +108,35 @@ export class ProfileView extends React.Component {
           });
         }
     }
+
+    return (
+      <div>
+        <Link to={'/'}>
+                    <Button
+                        variant="outline-dark"
+                    >
+                        Back to movie list
+                    </Button>
+                </Link>
+        <Row>
+          <Col xs={10} sm={5} md={5}>
+            <Form noValidate validated={validated} onSubmit={handleUpdate}>
+              {formField('Username', username, setUsername, 'text', '')}
+              {formField('Password', password, setPassword, 'password', 'Please provide a password of at least 6 characters.', {minLength: 6})}
+              {formField('Email', email, setEmail, 'email', 'Please provide a valid email address.')}
+              {formField('Birthday', birthday, setBirthday, 'date', 'Please provide a valid date (e.g. 01/01/1990).')}
+              <Button variant="primary" type="submit">
+                Update
+              </Button>
+            </Form>
+          </Col>
+          <Col xs={10} sm={5} md={5}>
+            <Form noValidate validated={validated} onSubmit={handleUnregister}>
+              <Button variant="outline-danger" type="submit">
+                Unregister
+              </Button>
+            </Form>
+          </Col>
+        </Row>
+      </div>
+    );

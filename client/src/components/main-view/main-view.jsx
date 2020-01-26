@@ -44,6 +44,13 @@ export class MainView extends React.Component {
     });
   }
 
+  updateUserProfile(data) {
+    this.setState({
+        userInfo: data
+    });
+    localStorage.setItem('user', data.username);
+}
+
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
@@ -51,6 +58,7 @@ export class MainView extends React.Component {
         user: localStorage.getItem('user')
       });
       this.getMovies(accessToken);
+      this.getUserProfile(accessToken);
     }
   }
 
