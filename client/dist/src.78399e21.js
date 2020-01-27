@@ -39767,7 +39767,7 @@ function (_React$Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       //authentication
-      var accessToken = localStorage.getItem('token');
+      var accessToken = localStorage.getItem("token");
 
       if (accessToken !== null) {
         this.getUser(accessToken);
@@ -39778,7 +39778,7 @@ function (_React$Component) {
     value: function getUser(token) {
       var _this2 = this;
 
-      var username = localStorage.getItem('user');
+      var username = localStorage.getItem("user");
 
       _axios.default.get("https://movieswithmichaelf/users/".concat(username), {
         headers: {
@@ -39802,11 +39802,11 @@ function (_React$Component) {
       var movie = this.props.movie;
       e.preventDefault();
 
-      _axios.default.post("https://movieswithmichaelf.herokuapp.com/users/".concat(localStorage.getItem('user'), "/Movies/").concat(movie._id), {
-        username: localStorage.getItem('user')
+      _axios.default.post("https://movieswithmichaelf.herokuapp.com/users/".concat(localStorage.getItem("user"), "/Movies/").concat(movie._id), {
+        username: localStorage.getItem("user")
       }, {
         headers: {
-          Authorization: "Bearer ".concat(localStorage.getItem('token'))
+          Authorization: "Bearer ".concat(localStorage.getItem("token"))
         }
       }).then(function (res) {
         alert("".concat(movie.Title, " successfully added to your favorites"));
@@ -39822,14 +39822,14 @@ function (_React$Component) {
       event.preventDefault();
       console.log(favoriteMovie);
 
-      _axios.default.delete("https://movieswithmichaelf/users/".concat(localStorage.getItem('user'), "/Favourites/").concat(favoriteMovie), {
+      _axios.default.delete("https://movieswithmichaelf/users/".concat(localStorage.getItem("user"), "/Favorites/").concat(favoriteMovie), {
         headers: {
-          Authorization: "Bearer ".concat(localStorage.getItem('token'))
+          Authorization: "Bearer ".concat(localStorage.getItem("token"))
         }
       }).then(function (response) {
-        _this3.getUser(localStorage.getItem('token'));
+        _this3.getUser(localStorage.getItem("token"));
       }).catch(function (event) {
-        alert('Something went wrong!');
+        alert("Something went wrong!");
       });
     }
   }, {
@@ -39837,25 +39837,25 @@ function (_React$Component) {
     value: function deleteUser() {
       var _this4 = this;
 
-      _axios.default.delete("https://movieswithmichaelf.herokuapp.com/users/".concat(localStorage.getItem('user')), {
+      _axios.default.delete("https://movieswithmichaelf.herokuapp.com/users/".concat(localStorage.getItem("user")), {
         headers: {
-          Authorization: "Bearer ".concat(localStorage.getItem('token'))
+          Authorization: "Bearer ".concat(localStorage.getItem("token"))
         }
       }).then(function (res) {
-        alert('Are you sure you want to delete your account?');
+        alert("Are you sure you want to delete your account?");
       }).then(function (res) {
-        alert('Account was successfully deleted');
+        alert("Account was successfully deleted");
       }).then(function (res) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
 
         _this4.setState({
           user: null
         });
 
-        window.open('/', '_self');
+        window.open("/", "_self");
       }).catch(function (e) {
-        alert('Account could not be deleted ' + e);
+        alert("Account could not be deleted " + e);
       });
     }
   }, {
@@ -39875,18 +39875,16 @@ function (_React$Component) {
           favoriteMovies = _this$state.favoriteMovies;
       return _react.default.createElement(_Card.default, {
         style: {
-          width: '25rem'
+          width: "25rem"
         }
       }, _react.default.createElement(_Card.default.Img, {
         variant: "top"
       }), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, "My Profile"), _react.default.createElement(ListGroup, {
         variant: "flush"
-      }, _react.default.createElement(ListGroup.Item, null, "Username: ", username), _react.default.createElement(ListGroup.Item, null, "Password:******* "), _react.default.createElement(ListGroup.Item, null, "Email: ", email), _react.default.createElement(ListGroup.Item, null, "Birthday: ", birthday && birthday.slice(0, 10)), _react.default.createElement(ListGroup.Item, null, "Favorite Movies:", _react.default.createElement("div", null, favoriteMovies.length === 0 && _react.default.createElement("div", {
-        className: "value"
-      }, "No Favourite Movies have been added"), favoriteMovies.length > 0 && _react.default.createElement("ul", null, favouriteMovies.map(function (favoriteMovie) {
+      }, _react.default.createElement(ListGroup.Item, null, "Username: ", username), _react.default.createElement(ListGroup.Item, null, "Password:******* "), _react.default.createElement(ListGroup.Item, null, "Email: ", email), _react.default.createElement(ListGroup.Item, null, "Birthday: ", birthday && birthday.slice(0, 10)), _react.default.createElement(ListGroup.Item, null, "Favorite Movies:", _react.default.createElement("div", null, favoriteMovies.length === 0 && _react.default.createElement("div", null, "No Favourite Movies have been added"), favoriteMovies.length > 0 && _react.default.createElement("ul", null, favoriteMovies.map(function (favoriteMovie) {
         return _react.default.createElement("li", {
           key: favoriteMovie
-        }, _react.default.createElement("p", null, JSON.parse(localStorage.getItem('movies')).find(function (movie) {
+        }, _react.default.createElement("p", null, JSON.parse(localStorage.getItem("movies")).find(function (movie) {
           return movie._id === favoriteMovie;
         }).Title), _react.default.createElement(_reactRouterDom.Link, {
           to: "/movies/".concat(favoriteMovie)
@@ -39898,9 +39896,7 @@ function (_React$Component) {
             return _this5.deleteMovieFromFavs(event, favoriteMovie);
           }
         }, "Delete"));
-      }))))), _react.default.createElement(_Form.default, {
-        className: "update-form"
-      }, _react.default.createElement("div", null, _react.default.createElement("p", null, "Please update your information below:")), _react.default.createElement(_Form.default.Group, {
+      }))))), _react.default.createElement(_Form.default, null, _react.default.createElement("div", null, _react.default.createElement("p", null, "Please update your information below:")), _react.default.createElement(_Form.default.Group, {
         controlId: "formNewUsername"
       }, _react.default.createElement(_Form.default.Label, null, "Username"), _react.default.createElement(_Form.default.Control, {
         type: "text",
@@ -39927,9 +39923,7 @@ function (_React$Component) {
         onChange: function onChange(e) {
           return setEmail(e.target.value);
         }
-      }), _react.default.createElement(_Form.default.Text, {
-        className: "text-muted"
-      }, "We'll never share your email with anyone else.")), _react.default.createElement(_Form.default.Group, {
+      }), _react.default.createElement(_Form.default.Text, null, "We'll never share your email with anyone else.")), _react.default.createElement(_Form.default.Group, {
         controlId: "formBirthday"
       }, _react.default.createElement(_Form.default.Label, null, "Birthday"), _react.default.createElement(_Form.default.Control, {
         type: "date",
