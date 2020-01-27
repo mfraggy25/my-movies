@@ -1,142 +1,186 @@
 import React from 'react';
 import axios from 'axios';
-
+import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
+import Form from 'react-bootstrap/Form';
 import './profile-view.scss'
 
 import { Link } from "react-router-dom";
 
 export class ProfileView extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            username: null,
-            password: null,
-            email: null,
-            birthday: null,
-            favorites: []
-        };
-    }
 
-    componentDidMount() {
-      let accessToken = localStorage.getItem('token');
-      if (accessToken !== null) {
-          this.getUserProfile(accessToken);
-      }
-  }
-    handleChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
+  constructor() {
+    super();
+    this.state = {
+      username: null,
+      password: null,
+      email: null,
+      birthday: null,
+      favoriteMovies: []
+    };
   }
 
-    getUserProfile (token) {
-        axios.get(`https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem('user')}`, {
-            headers: { Authorization: `Bearer ${token}` }
-        })
-            .then((response) => {
-                this.setState({
-                    username: response.data.username,
-                    password: response.data.password,
-                    email: response.data.email,
-                    birthday: response.data.birthday,
-                    favorites: response.data.favourites
-                });
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+  componentDidMount() {
+    //authentication
+    let accessToken = localStorage.getItem('token');
+    if (accessToken !== null) {
+      this.getUser(accessToken);
     }
-    
-    addToFavorites(e) {
-      const { movie } = this.props;
-      e.preventDefault();
-      axios.post(
-        `https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem('user')}/Movies/${movie._id}`,
-        { username: localStorage.getItem('user') },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        })
-        .then(res => {
-          alert(`${movie.Title} successfully added to your favorites`);
-        })
-        .catch(error => {
-          alert(`${movie.Title} not added to your favorites` + error)
+  }
+
+  getUser(token) {
+    let username = localStorage.getItem('user');
+    axios.get(`https://movieswithmichaelf/users/${username}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(response => {
+        this.setState({
+          username: response.data.Username,
+          password: response.data.Password,
+          email: response.data.Email,
+          birthday: response.data.Birthday,
+          favoriteMovies: response.data.Favorites
         });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  addToFavorites(e) {
+    const { movie } = this.props;
+    e.preventDefault();
+    axios.post(
+      `https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem('user')}/Movies/${movie._id}`,
+      { username: localStorage.getItem('user') },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
+      .then(res => {
+        alert(`${movie.Title} successfully added to your favorites`);
+      })
+      .catch(error => {
+        alert(`${movie.Title} not added to your favorites` + error)
+      });
+  }
+
+  deleteMovieFromFavs(event, favoriteMovie) {
+    event.preventDefault();
+    console.log(favoriteMovie);
+    axios.delete(`https://movieswithmichaelf/users/${localStorage.getItem('user')}/Favourites/${favoriteMovie}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
+      .then(response => {
+        this.getUser(localStorage.getItem('token'));
+      })
+      .catch(event => {
+        alert('Something went wrong!');
+      });
+  }
+
+  deleteUser() {
+    axios.delete(`https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem('user')}`,
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
+      .then(res => {
+        alert('Are you sure you want to delete your account?')
+      })
+      .then(res => {
+        alert('Account was successfully deleted')
+      })
+      .then(res => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+
+        this.setState({
+          user: null
+
+        });
+        window.open('/', '_self');
+      })
+      .catch(e => {
+        alert('Account could not be deleted ' + e)
+      });
     }
 
-    deleteFavorite(movieId) {
-        axios.delete(`https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem('user')}/Movies/${movieId}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        })
-          .then(res => {
-            document.location.reload(true);
-          })
-          .then(res => {
-            alert('Movie successfully deleted from favorites');
-          })
-    
-          .catch(e => {
-            alert('Movie could not be deleted from favorites' + e)
-          });
-      }
+  handleChange(e) {
+    this.setState({ [e.target.name]: e.target.value })
+  }
 
-    deleteUser() {
-        axios.delete(`https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem('user')}`,
-          {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-          })
-          .then(res => {
-            alert('Are you sure you want to delete your account?')
-          })
-          .then(res => {
-            alert('Account was successfully deleted')
-          })
-          .then(res => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-    
-            this.setState({
-              user: null
-    
-            });
-            window.open('/', '_self');
-          })
-          .catch(e => {
-            alert('Account could not be deleted ' + e)
-          });
-        }
-    }
+  render() {
+    const { username, email, birthday, favoriteMovies } = this.state;
 
     return (
+      <Card style={{ width: '25rem' }}>
+        <Card.Img variant="top"/>
+        <Card.Body>
+          <Card.Title>My Profile</Card.Title>
+          <ListGroup variant="flush">
+            <ListGroup.Item>Username: {username}</ListGroup.Item>
+            <ListGroup.Item>Password:******* </ListGroup.Item>
+            <ListGroup.Item>Email: {email}</ListGroup.Item>
+            <ListGroup.Item>Birthday: {birthday && birthday.slice(0, 10)}</ListGroup.Item>
+            <ListGroup.Item>Favorite Movies:
+             <div>
+                {favoriteMovies.length === 0 &&
+                  <div className="value">No Favourite Movies have been added</div>
+                }
+                {favoriteMovies.length > 0 &&
+                  <ul>
+                    {favouriteMovies.map(favoriteMovie =>
+                      (<li key={favoriteMovie}>
+                        <p>
+                          {JSON.parse(localStorage.getItem('movies')).find(movie => movie._id === favoriteMovie).Title}
+                        </p>
+                        <Link to={`/movies/${favoriteMovie}`}>
+                          <Button variant="info">Open</Button>
+                        </Link>
+                        <Button variant="secondary" onClick={(event) => this.deleteMovieFromFavs(event, favoriteMovie)}>
+                          Delete
+                        </Button>
+                      </li>)
+                    )}
+                  </ul>
+                }
+              </div>
+            </ListGroup.Item>
+          </ListGroup>
+          <Form className="update-form">
       <div>
-        <Link to={'/'}>
-                    <Button
-                        variant="outline-dark"
-                    >
-                        Back to movie list
-                    </Button>
-                </Link>
-        <Row>
-          <Col xs={10} sm={5} md={5}>
-            <Form noValidate validated={validated} onSubmit={handleUpdate}>
-              {formField('Username', username, setUsername, 'text', '')}
-              {formField('Password', password, setPassword, 'password', 'Please provide a password of at least 6 characters.', {minLength: 6})}
-              {formField('Email', email, setEmail, 'email', 'Please provide a valid email address.')}
-              {formField('Birthday', birthday, setBirthday, 'date', 'Please provide a valid date (e.g. 01/01/1990).')}
-              <Button variant="primary" type="submit">
-                Update
-              </Button>
-            </Form>
-          </Col>
-          <Col xs={10} sm={5} md={5}>
-            <Form noValidate validated={validated} onSubmit={handleUnregister}>
-              <Button variant="outline-danger" type="submit">
-                Unregister
-              </Button>
-            </Form>
-          </Col>
-        </Row>
+        <p>Please update your information below:</p>
       </div>
+      <Form.Group controlId="formNewUsername">
+        <Form.Label>Username</Form.Label>
+        <Form.Control type="text" placeholder="Your username" value={username} onChange={e => setUsername(e.target.value)} />
+      </Form.Group>
+      <Form.Group controlId="formPassword">
+        <Form.Label>Password</Form.Label>
+        <Form.Control type="password" placeholder="Your Password" value={password} onChange={e => setPassword(e.target.value)} />
+      </Form.Group>
+      <Form.Group controlId="formBasicEmail">
+        <Form.Label>Email address</Form.Label>
+        <Form.Control type="email" placeholder="Enter email" value={email} onChange={e => setEmail(e.target.value)} />
+        <Form.Text className="text-muted">
+          We'll never share your email with anyone else.
+          </Form.Text>
+      </Form.Group>
+      <Form.Group controlId='formBirthday'>
+        <Form.Label>Birthday</Form.Label>
+        <Form.Control type='date' placeholder='MM/DD/YYYY' value={birthday} onChange={e => setBirthday(e.target.value)} />
+      </Form.Group>
+      <div>
+        <Button variant="secondary" type="submit" onClick={handleUpdate} >
+          Update
+      </Button>
+        <Button variant="danger" type="submit" onClick={handleDelete} >
+          Delete profile
+      </Button>
+      </div>
+    </Form>
+        </Card.Body>
+      </Card>
     );
+  }
+}
+  
