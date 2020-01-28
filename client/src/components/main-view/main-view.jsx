@@ -112,6 +112,13 @@ export class MainView extends React.Component {
       return (
         <Router>
           <div className="main-view">
+          <Link component={RouterLink} to={`/user/${user}`} >
+                                <Button
+                                    variant="outline-dark"
+                                >
+                                    Profile
+                                </Button>
+                            </Link>
             <Route
               exact
               path="/"

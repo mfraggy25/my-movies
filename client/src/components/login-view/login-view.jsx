@@ -55,20 +55,16 @@ export function LoginView(props) {
             onChange={e => setPassword(e.target.value)}
           />
         </Form.Group>
-        <Form.Group controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group>
         <Button variant="primary" id="loginButton" onClick={handleSubmit}>
           Submit
         </Button>
         <Form.Group controlId="newUser">
-          <Button
-            variant="secondary"
-            id="registerButton"
-            onClick={() => props.onClick()}
-          >
-            Not registered? Sign up!
-          </Button>
+          <Form.Text>Don´t have an account?</Form.Text>
+          <Link to={"/register"}>
+            <Button variant="secondary" type="link">
+              Register
+            </Button>
+          </Link>
         </Form.Group>
       </Form>
     </Container>

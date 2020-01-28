@@ -39536,24 +39536,18 @@ function LoginView(props) {
     onChange: function onChange(e) {
       return setPassword(e.target.value);
     }
-  })), _react.default.createElement(_Form.default.Group, {
-    controlId: "formBasicCheckbox"
-  }, _react.default.createElement(_Form.default.Check, {
-    type: "checkbox",
-    label: "Check me out"
   })), _react.default.createElement(_Button.default, {
     variant: "primary",
     id: "loginButton",
     onClick: handleSubmit
   }, "Submit"), _react.default.createElement(_Form.default.Group, {
     controlId: "newUser"
+  }, _react.default.createElement(_Form.default.Text, null, "Don\xB4t have an account?"), _react.default.createElement(_reactRouterDom.Link, {
+    to: "/register"
   }, _react.default.createElement(_Button.default, {
     variant: "secondary",
-    id: "registerButton",
-    onClick: function onClick() {
-      return props.onClick();
-    }
-  }, "Not registered? Sign up!"))));
+    type: "link"
+  }, "Register")))));
 }
 
 LoginView.propTypes = {
@@ -39584,6 +39578,8 @@ var _Form = _interopRequireDefault(require("react-bootstrap/Form"));
 var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
 
 var _axios = _interopRequireDefault(require("axios"));
+
+var _reactRouterDom = require("react-router-dom");
 
 require("./registration-view.scss");
 
@@ -39627,10 +39623,19 @@ function RegistrationView(props) {
       setBirthday = _useState8[1];
 
   var handleSubmit = function handleSubmit(e) {
-    e.preventDefault();
-    console.log(username, password, birthday, email); // Send a request to the server for authentication then call props.onLoggedIn(username)
-
-    props.onLoggedIn(username);
+    _axios.default.post("https://movieswithmichaelf.herokuapp.com/users", {
+      Username: username,
+      Password: password,
+      Email: email,
+      Birthday: birthday
+    }).then(function (response) {
+      var data = response.data;
+      console.log(data);
+      window.open("/", "_self"); // the second argument '_self' is necessary so that the page will open in the current tab
+    }).catch(function (e) {
+      console.log("error registering the user");
+      alert("Unable to register, please try again.");
+    });
   };
 
   return _react.default.createElement(_Container.default, {
@@ -39683,19 +39688,19 @@ function RegistrationView(props) {
     variant: "primary",
     type: "submit",
     onClick: handleSubmit
-  }, "Submit"), _react.default.createElement(_Button.default, {
+  }, "Submit"), _react.default.createElement(_reactRouterDom.Link, {
+    to: "/"
+  }, _react.default.createElement(_Button.default, {
     variant: "secondary",
-    onClick: function onClick() {
-      return props.onClick();
-    }
-  }, "Already registered?")));
+    type: "link"
+  }, "Already registered?"))));
 }
 
 RegistrationView.propTypes = {
   onSignedIn: _propTypes.default.func.isRequired,
   onClick: _propTypes.default.func.isRequired
 };
-},{"react":"../../node_modules/react/index.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","axios":"../node_modules/axios/index.js","./registration-view.scss":"components/registration-view/registration-view.scss"}],"components/profile-view/profile-view.scss":[function(require,module,exports) {
+},{"react":"../../node_modules/react/index.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","axios":"../node_modules/axios/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./registration-view.scss":"components/registration-view/registration-view.scss"}],"components/profile-view/profile-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -40319,7 +40324,12 @@ function (_React$Component) {
       } else {
         return _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement("div", {
           className: "main-view"
-        }, _react.default.createElement(_reactRouterDom.Route, {
+        }, _react.default.createElement(_reactRouterDom.Link, {
+          component: _reactRouterDom.RouterLink,
+          to: "/user/".concat(user)
+        }, _react.default.createElement(Button, {
+          variant: "outline-dark"
+        }, "Profile")), _react.default.createElement(_reactRouterDom.Route, {
           exact: true,
           path: "/",
           render: function render() {
@@ -40487,7 +40497,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60316" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62874" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
