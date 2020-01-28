@@ -30,7 +30,7 @@ export class ProfileView extends React.Component {
   getUser(token) {
     let username = localStorage.getItem("user");
     axios
-      .get(`https://movieswithmichaelf/users/${username}`, {
+      .get(`https://movieswithmichaelf.herokuapp.com/users/${username}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => {
@@ -44,6 +44,34 @@ export class ProfileView extends React.Component {
       })
       .catch(function(error) {
         console.log(error);
+      });
+  }
+
+  handleProfileUpdate(event) {
+    event.preventDefault();
+    axios
+      .put(
+        `https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem(
+          "user"
+        )}`,
+        {
+          username: this.state.usernameNew,
+          password: this.state.passwordNew,
+          email: this.state.emailNew,
+          birthday: this.state.birthdayNew
+        },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        }
+      )
+      .then(res => {
+        console.log("User data has been successfully updated.");
+        alert("Profile successfully updated!");
+        localStorage.setItem("user", this.state.usernameNew);
+      })
+      .catch(function(error) {
+        console.log("Unable to update user profile: " + error);
+        alert("Unable to update user profile: " + error);
       });
   }
 
@@ -73,7 +101,7 @@ export class ProfileView extends React.Component {
     console.log(favoriteMovie);
     axios
       .delete(
-        `https://movieswithmichaelf/users/${localStorage.getItem(
+        `https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem(
           "user"
         )}/Favorites/${favoriteMovie}`,
         {
@@ -216,10 +244,14 @@ export class ProfileView extends React.Component {
               />
             </Form.Group>
             <div>
-              <Button variant="secondary" type="submit" onClick={handleUpdate}>
+              <Button
+                variant="secondary"
+                type="submit"
+                onClick={handleProfileUpdate}
+              >
                 Update
               </Button>
-              <Button variant="danger" type="submit" onClick={handleDelete}>
+              <Button variant="danger" type="submit" onClick={deleteUser}>
                 Delete profile
               </Button>
             </div>
