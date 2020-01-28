@@ -39647,7 +39647,7 @@ function RegistrationView(props) {
     placeholder: "Enter email",
     value: email,
     onChange: function onChange(e) {
-      return createEmail(e.target.value);
+      return setEmail(e.target.value);
     }
   }), _react.default.createElement(_Form.default.Text, {
     className: "text-muted"
@@ -39658,7 +39658,7 @@ function RegistrationView(props) {
     placeholder: "Enter username",
     value: username,
     onChange: function onChange(e) {
-      return createUsername(e.target.value);
+      return setUsername(e.target.value);
     }
   }), _react.default.createElement(_Form.default.Control.Feedback, {
     type: "invalid"
@@ -39669,7 +39669,7 @@ function RegistrationView(props) {
     placeholder: "Password",
     value: password,
     onChange: function onChange(e) {
-      return createPassword(e.target.value);
+      return setPassword(e.target.value);
     }
   })), _react.default.createElement(_Form.default.Group, {
     controlId: "formBasicDob"
@@ -39678,7 +39678,7 @@ function RegistrationView(props) {
     placeholder: "01/01/1990",
     value: birthday
   }, _defineProperty(_React$createElement, "value", birthday), _defineProperty(_React$createElement, "onChange", function onChange(e) {
-    return createDob(e.target.value);
+    return setBirthday(e.target.value);
   }), _React$createElement))), _react.default.createElement(_Form.default.Group, {
     controlId: "formBasicCheckbox"
   }, _react.default.createElement(_Form.default.Check, {
@@ -40497,7 +40497,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62874" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65076" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
