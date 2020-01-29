@@ -26,7 +26,7 @@ export class MainView extends React.Component {
     this.state = {
       movies: [],
       selectedMovie: null,
-      user: null,
+      users: [],
       register: false
     };
   }
@@ -47,13 +47,16 @@ export class MainView extends React.Component {
       });
   }
 
-  getUser(token) {
+  getAllUsers(token) {
     axios
       .get("https://movieswithmichaelf.herokuapp.com/users/", {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => {
-        this.props.setLoggedUser(response.data);
+        console.log(response);
+        this.setState({
+          users: response.data
+        });
       })
       .catch(error => {
         console.log(error);
@@ -74,7 +77,7 @@ export class MainView extends React.Component {
         user: localStorage.getItem("user")
       });
       this.getMovies(accessToken);
-      this.getUser(accessToken);
+      this.getAllUsers(accessToken);
     }
   }
 
@@ -87,6 +90,7 @@ export class MainView extends React.Component {
     localStorage.setItem("token", authData.token);
     localStorage.setItem("user", authData.user.Username);
     this.getMovies(authData.token);
+    this.getAllUsers(authData.token);
   }
 
   render() {
@@ -112,13 +116,9 @@ export class MainView extends React.Component {
       return (
         <Router>
           <div className="main-view">
-          <Link component={RouterLink} to={`/user/${user}`} >
-                                <Button
-                                    variant="outline-dark"
-                                >
-                                    Profile
-                                </Button>
-                            </Link>
+            <Link component={RouterLink} to={`/users/${user}`}>
+              <Button variant="outline-dark">Profile</Button>
+            </Link>
             <Route
               exact
               path="/"

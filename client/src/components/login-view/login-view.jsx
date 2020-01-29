@@ -22,7 +22,8 @@ export function LoginView(props) {
       // Send a request to the server for authentication then call props.onLoggedIn(username)
       .then(response => {
         const data = response.data;
-        props.onLoggedIn(data);
+        console.log("Logged in");
+        props.onLoggedIn(username);
       })
       .catch(e => {
         console.log("no such user");

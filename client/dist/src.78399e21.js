@@ -39508,7 +39508,8 @@ function LoginView(props) {
     }) // Send a request to the server for authentication then call props.onLoggedIn(username)
     .then(function (response) {
       var data = response.data;
-      props.onLoggedIn(data);
+      console.log("Logged in");
+      props.onLoggedIn(username);
     }).catch(function (e) {
       console.log("no such user");
     });
@@ -40217,7 +40218,7 @@ function (_React$Component) {
     _this.state = {
       movies: [],
       selectedMovie: null,
-      user: null,
+      users: [],
       register: false
     };
     return _this;
@@ -40242,8 +40243,8 @@ function (_React$Component) {
       });
     }
   }, {
-    key: "getUser",
-    value: function getUser(token) {
+    key: "getAllUsers",
+    value: function getAllUsers(token) {
       var _this3 = this;
 
       _axios.default.get("https://movieswithmichaelf.herokuapp.com/users/", {
@@ -40251,7 +40252,11 @@ function (_React$Component) {
           Authorization: "Bearer ".concat(token)
         }
       }).then(function (response) {
-        _this3.props.setLoggedUser(response.data);
+        console.log(response);
+
+        _this3.setState({
+          users: response.data
+        });
       }).catch(function (error) {
         console.log(error);
       });
@@ -40274,7 +40279,7 @@ function (_React$Component) {
           user: localStorage.getItem("user")
         });
         this.getMovies(accessToken);
-        this.getUser(accessToken);
+        this.getAllUsers(accessToken);
       }
     }
   }, {
@@ -40287,6 +40292,7 @@ function (_React$Component) {
       localStorage.setItem("token", authData.token);
       localStorage.setItem("user", authData.user.Username);
       this.getMovies(authData.token);
+      this.getAllUsers(authData.token);
     }
   }, {
     key: "render",
@@ -40326,7 +40332,7 @@ function (_React$Component) {
           className: "main-view"
         }, _react.default.createElement(_reactRouterDom.Link, {
           component: _reactRouterDom.RouterLink,
-          to: "/user/".concat(user)
+          to: "/users/".concat(user)
         }, _react.default.createElement(Button, {
           variant: "outline-dark"
         }, "Profile")), _react.default.createElement(_reactRouterDom.Route, {
@@ -40497,7 +40503,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65076" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53051" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
