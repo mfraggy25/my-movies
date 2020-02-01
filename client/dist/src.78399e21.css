@@ -1,6 +1,12 @@
 .my-flix {
   color: steelblue;
 }
+.main-view {
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  width: 50%;
+}
 .loginContainer {
   background-color: #2bc45e;
   color: #3a1155;
