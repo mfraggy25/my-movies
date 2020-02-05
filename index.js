@@ -16,7 +16,7 @@ require("./passport");
 //mongoose.connect("mongodb://localhost:27017/MyMovies", {useNewUrlParser: true});
 mongoose.connect(
   "mongodb+srv://michaelf25:greece1@cluster0-bvujn.mongodb.net/MyMovies?retryWrites=true&w=majority",
-   { useNewURLParser: true }
+  { useNewURLParser: true }
 );
 
 app.use(bodyParser.json());
@@ -42,19 +42,19 @@ app.get("/", function(req, res) {
 });
 
 //GET list of data about all movies
-app.get(
-  '/movies',
-  passport.authenticate('jwt', { session: false }),
-  function (req, res) {
-    Movies.find()
-      .then(function (movies) {
-        res.status(201).json(movies);
-      })
-      .catch(function (err) {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      });
-  });
+app.get("/movies", passport.authenticate("jwt", { session: false }), function(
+  req,
+  res
+) {
+  Movies.find()
+    .then(function(movies) {
+      res.status(201).json(movies);
+    })
+    .catch(function(err) {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
 
 // app.get("/movies", passport.authenticate("jwt", { session: false }), function(
 //   req,
@@ -141,10 +141,8 @@ app.get("/users", function(req, res) {
 // Add new user
 app.post(
   "/users",
-  // Validation logic here for request
-  //you can either use a chain of methods like .not().isEmpty()
-  //which means "opposite of isEmpty" in plain english "is not empty"
-  //or use .isLength({min: 5}) which means
+  //Validation logic here for request you can either use a chain of methods like .not().isEmpty()
+  //which means "opposite of isEmpty" in plain english "is not empty" or use .isLength({min: 5}) which means
   //minimum value of 5 characters are only allowed
   [
     check("Username", "Username is required").isLength({ min: 5 }),
@@ -157,7 +155,8 @@ app.post(
       .isEmpty(),
     check("Email", "Email does not appear to be valid").isEmail()
   ],
-  (req, res) => {
+  function(req, res) {
+    console.log("hit");
     // check the validation object for errors
     var errors = validationResult(req);
 
@@ -166,6 +165,7 @@ app.post(
     }
 
     var hashedPassword = Users.hashPassword(req.body.Password);
+    //  console.log("chair", hashedPassword, req.body.Password);
     Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
       .then(function(user) {
         if (user) {

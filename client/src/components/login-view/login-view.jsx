@@ -14,6 +14,7 @@ export function LoginView(props) {
 
   const handleSubmit = e => {
     e.preventDefault();
+    console.log("multiple");
     axios
       .post("https://movieswithmichaelf.herokuapp.com/login", {
         Username: username,
@@ -22,8 +23,8 @@ export function LoginView(props) {
       // Send a request to the server for authentication then call props.onLoggedIn(username)
       .then(response => {
         const data = response.data;
-        console.log("Logged in");
-        props.onLoggedIn(username);
+        console.log("Logged in", data);
+        //props.onLoggedIn(username);
       })
       .catch(e => {
         console.log("no such user");
@@ -73,6 +74,5 @@ export function LoginView(props) {
 }
 
 LoginView.propTypes = {
-  onLoggedIn: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired
+  onLoggedIn: PropTypes.func.isRequired
 };

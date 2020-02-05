@@ -39501,6 +39501,7 @@ function LoginView(props) {
 
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
+    console.log("multiple");
 
     _axios.default.post("https://movieswithmichaelf.herokuapp.com/login", {
       Username: username,
@@ -39508,8 +39509,7 @@ function LoginView(props) {
     }) // Send a request to the server for authentication then call props.onLoggedIn(username)
     .then(function (response) {
       var data = response.data;
-      console.log("Logged in");
-      props.onLoggedIn(username);
+      console.log("Logged in", data); //props.onLoggedIn(username);
     }).catch(function (e) {
       console.log("no such user");
     });
@@ -39552,8 +39552,7 @@ function LoginView(props) {
 }
 
 LoginView.propTypes = {
-  onLoggedIn: _propTypes.default.func.isRequired,
-  onClick: _propTypes.default.func.isRequired
+  onLoggedIn: _propTypes.default.func.isRequired
 };
 },{"react":"../../node_modules/react/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","prop-types":"../node_modules/prop-types/index.js","axios":"../node_modules/axios/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./login-view.scss":"components/login-view/login-view.scss"}],"components/registration-view/registration-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
@@ -39624,6 +39623,9 @@ function RegistrationView(props) {
       setBirthday = _useState8[1];
 
   var handleSubmit = function handleSubmit(e) {
+    e.preventDefault();
+    console.log("testjrnoirinbjrngbirnbirn");
+
     _axios.default.post("https://movieswithmichaelf.herokuapp.com/users", {
       Username: username,
       Password: password,
@@ -39631,8 +39633,7 @@ function RegistrationView(props) {
       Birthday: birthday
     }).then(function (response) {
       var data = response.data;
-      console.log(data);
-      window.open("/", "_self"); // the second argument '_self' is necessary so that the page will open in the current tab
+      console.log("onw", data); // window.open("/", "_self"); // the second argument '_self' is necessary so that the page will open in the current tab
     }).catch(function (e) {
       console.log("error registering the user");
       alert("Unable to register, please try again.");
@@ -39696,11 +39697,6 @@ function RegistrationView(props) {
     type: "link"
   }, "Already registered?"))));
 }
-
-RegistrationView.propTypes = {
-  onSignedIn: _propTypes.default.func.isRequired,
-  onClick: _propTypes.default.func.isRequired
-};
 },{"react":"../../node_modules/react/index.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","axios":"../node_modules/axios/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./registration-view.scss":"components/registration-view/registration-view.scss"}],"components/profile-view/profile-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
@@ -39794,11 +39790,11 @@ function (_React$Component) {
         }
       }).then(function (response) {
         _this2.setState({
-          username: response.data.Username,
-          password: response.data.Password,
-          email: response.data.Email,
-          birthday: response.data.Birthday,
-          favoriteMovies: response.data.Favorites
+          username: response.data.username,
+          password: response.data.password,
+          email: response.data.email,
+          birthday: response.data.birthday,
+          favoriteMovies: response.data.favorites
         });
       }).catch(function (error) {
         console.log(error);
@@ -40503,7 +40499,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54980" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63974" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
