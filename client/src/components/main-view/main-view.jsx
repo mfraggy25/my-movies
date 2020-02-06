@@ -25,9 +25,8 @@ export class MainView extends React.Component {
 
     this.state = {
       movies: [],
-      selectedMovie: null,
-      users: [],
-      register: false
+      user: null,
+      users: []
     };
   }
 
@@ -49,7 +48,7 @@ export class MainView extends React.Component {
 
   getAllUsers(token) {
     axios
-      .get("https://movieswithmichaelf.herokuapp.com/users/", {
+      .get("https://movieswithmichaelf.herokuapp.com/users", {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => {
@@ -63,6 +62,44 @@ export class MainView extends React.Component {
       });
   }
 
+  componentDidMount() {
+    // Persists login data: get value of token from localStorage.
+    let accessToken = localStorage.getItem("token");
+    if (accessToken !== null) {
+      this.setState({
+        user: localStorage.getItem("user")
+      });
+      this.getMovies(accessToken);
+      this.getUser(localStorage.getItem("user"), accessToken);
+    }
+  }
+
+  // onLoggedIn() updates user state of MainView, will be called when user has logged in.
+  // Parameter authData gives user and token
+  onLoggedIn(authData) {
+    this.setState({
+      user: authData.user.Username
+    });
+    // Auth information (= user + token) received from handleLogin method has been saved in localStorage.
+    // setItem method accepts two arguments (key and value)
+    localStorage.setItem("token", authData.token);
+    localStorage.setItem("user", authData.user.Username);
+    // Will get the movies from the API once user is logged in
+    this.getMovies(authData.token);
+    this.setState({
+      userInfo: authData.user
+    });
+  }
+
+  handleLogout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    this.setState({
+      user: null
+    });
+    window.open("/", "_self");
+  }
+
   handleProfileUpdate(data) {
     this.setState({
       userInfo: data
@@ -70,31 +107,8 @@ export class MainView extends React.Component {
     localStorage.setItem("user", data.username);
   }
 
-  componentDidMount() {
-    let accessToken = localStorage.getItem("token");
-    if (accessToken !== null) {
-      this.setState({
-        user: localStorage.getItem("user")
-      });
-      this.getMovies(accessToken);
-      this.getAllUsers(accessToken);
-    }
-  }
-
-  onLoggedIn(authData) {
-    console.log(authData);
-    this.setState({
-      user: authData.user.Username
-    });
-
-    localStorage.setItem("token", authData.token);
-    localStorage.setItem("user", authData.user.Username);
-    this.getMovies(authData.token);
-    this.getAllUsers(authData.token);
-  }
-
   render() {
-    const { movies, user, userInfo, token } = this.state;
+    const { movies, user, users } = this.state;
 
     if (!movies) return <div className="main-view" />;
     if (!user) {
@@ -119,18 +133,16 @@ export class MainView extends React.Component {
             <Link component={RouterLink} to={`/users/${user}`}>
               <Button variant="outline-dark">Profile</Button>
             </Link>
+            <Button variant="primary" onClick={() => this.handleLogout()}>
+              Log out
+            </Button>
             <Route
               exact
               path="/"
-              render={() => {
-                if (!user)
-                  return (
-                    <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
-                  );
-                return <MoviesList movies={movies} />;
-              }}
+              render={() =>
+                movies.map(m => <MovieCard key={m._id} movie={m} />)
+              }
             />
-            <Route path="/register" render={() => <RegistrationView />} />
             <Route
               path="/movies/:movieId"
               render={({ match }) => (
@@ -173,17 +185,6 @@ export class MainView extends React.Component {
               render={({ match }) => {
                 return <ProfileView userInfo={userInfo} />;
               }}
-            />
-            <Route
-              path="/update/:Username"
-              render={() => (
-                <ProfileUpdate
-                  userInfo={userInfo}
-                  user={user}
-                  token={token}
-                  updateUser={data => this.updateUser(data)}
-                />
-              )}
             />
           </div>
         </Router>

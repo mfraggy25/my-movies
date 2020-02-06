@@ -39499,7 +39499,7 @@ function LoginView(props) {
       password = _useState4[0],
       setPassword = _useState4[1];
 
-  var handleSubmit = function handleSubmit(e) {
+  var handleLogin = function handleLogin(e) {
     e.preventDefault();
     console.log("multiple");
 
@@ -39512,6 +39512,7 @@ function LoginView(props) {
       console.log("Logged in", data); //props.onLoggedIn(username);
     }).catch(function (e) {
       console.log("no such user");
+      return alert("Invalid username or password. Please try again");
     });
   };
 
@@ -39540,7 +39541,7 @@ function LoginView(props) {
   })), _react.default.createElement(_Button.default, {
     variant: "primary",
     id: "loginButton",
-    onClick: handleSubmit
+    onClick: handleLogin
   }, "Submit"), _react.default.createElement(_Form.default.Group, {
     controlId: "newUser"
   }, _react.default.createElement(_Form.default.Text, null, "Don\xB4t have an account?"), _react.default.createElement(_reactRouterDom.Link, {
@@ -39633,7 +39634,9 @@ function RegistrationView(props) {
       Birthday: birthday
     }).then(function (response) {
       var data = response.data;
-      console.log("onw", data); // window.open("/", "_self"); // the second argument '_self' is necessary so that the page will open in the current tab
+      console.log("onw", data);
+      alert("Registration was successful. Please log in");
+      window.open("/", "_self"); // the second argument '_self' is necessary so that the page will open in the current tab
     }).catch(function (e) {
       console.log("error registering the user");
       alert("Unable to register, please try again.");
@@ -40213,9 +40216,8 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(MainView).call(this, props));
     _this.state = {
       movies: [],
-      selectedMovie: null,
-      users: [],
-      register: false
+      user: null,
+      users: []
     };
     return _this;
   }
@@ -40243,7 +40245,7 @@ function (_React$Component) {
     value: function getAllUsers(token) {
       var _this3 = this;
 
-      _axios.default.get("https://movieswithmichaelf.herokuapp.com/users/", {
+      _axios.default.get("https://movieswithmichaelf.herokuapp.com/users", {
         headers: {
           Authorization: "Bearer ".concat(token)
         }
@@ -40258,16 +40260,9 @@ function (_React$Component) {
       });
     }
   }, {
-    key: "handleProfileUpdate",
-    value: function handleProfileUpdate(data) {
-      this.setState({
-        userInfo: data
-      });
-      localStorage.setItem("user", data.username);
-    }
-  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
+      // Persists login data: get value of token from localStorage.
       var accessToken = localStorage.getItem("token");
 
       if (accessToken !== null) {
@@ -40275,20 +40270,44 @@ function (_React$Component) {
           user: localStorage.getItem("user")
         });
         this.getMovies(accessToken);
-        this.getAllUsers(accessToken);
+        this.getUser(localStorage.getItem("user"), accessToken);
       }
-    }
+    } // onLoggedIn() updates user state of MainView, will be called when user has logged in.
+    // Parameter authData gives user and token
+
   }, {
     key: "onLoggedIn",
     value: function onLoggedIn(authData) {
-      console.log(authData);
       this.setState({
         user: authData.user.Username
-      });
+      }); // Auth information (= user + token) received from handleLogin method has been saved in localStorage.
+      // setItem method accepts two arguments (key and value)
+
       localStorage.setItem("token", authData.token);
-      localStorage.setItem("user", authData.user.Username);
+      localStorage.setItem("user", authData.user.Username); // Will get the movies from the API once user is logged in
+
       this.getMovies(authData.token);
-      this.getAllUsers(authData.token);
+      this.setState({
+        userInfo: authData.user
+      });
+    }
+  }, {
+    key: "handleLogout",
+    value: function handleLogout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      this.setState({
+        user: null
+      });
+      window.open("/", "_self");
+    }
+  }, {
+    key: "handleProfileUpdate",
+    value: function handleProfileUpdate(data) {
+      this.setState({
+        userInfo: data
+      });
+      localStorage.setItem("user", data.username);
     }
   }, {
     key: "render",
@@ -40298,8 +40317,7 @@ function (_React$Component) {
       var _this$state = this.state,
           movies = _this$state.movies,
           user = _this$state.user,
-          userInfo = _this$state.userInfo,
-          token = _this$state.token;
+          users = _this$state.users;
       if (!movies) return _react.default.createElement("div", {
         className: "main-view"
       });
@@ -40331,23 +40349,21 @@ function (_React$Component) {
           to: "/users/".concat(user)
         }, _react.default.createElement(Button, {
           variant: "outline-dark"
-        }, "Profile")), _react.default.createElement(_reactRouterDom.Route, {
+        }, "Profile")), _react.default.createElement(Button, {
+          variant: "primary",
+          onClick: function onClick() {
+            return _this4.handleLogout();
+          }
+        }, "Log out"), _react.default.createElement(_reactRouterDom.Route, {
           exact: true,
           path: "/",
           render: function render() {
-            if (!user) return _react.default.createElement(_loginView.LoginView, {
-              onLoggedIn: function onLoggedIn(user) {
-                return _this4.onLoggedIn(user);
-              }
+            return movies.map(function (m) {
+              return _react.default.createElement(_movieCard.MovieCard, {
+                key: m._id,
+                movie: m
+              });
             });
-            return _react.default.createElement(MoviesList, {
-              movies: movies
-            });
-          }
-        }), _react.default.createElement(_reactRouterDom.Route, {
-          path: "/register",
-          render: function render() {
-            return _react.default.createElement(_registrationView.RegistrationView, null);
           }
         }), _react.default.createElement(_reactRouterDom.Route, {
           path: "/movies/:movieId",
@@ -40391,18 +40407,6 @@ function (_React$Component) {
             var match = _ref4.match;
             return _react.default.createElement(_profileView.ProfileView, {
               userInfo: userInfo
-            });
-          }
-        }), _react.default.createElement(_reactRouterDom.Route, {
-          path: "/update/:Username",
-          render: function render() {
-            return _react.default.createElement(ProfileUpdate, {
-              userInfo: userInfo,
-              user: user,
-              token: token,
-              updateUser: function updateUser(data) {
-                return _this4.updateUser(data);
-              }
             });
           }
         })));

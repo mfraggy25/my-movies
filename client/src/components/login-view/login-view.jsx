@@ -12,7 +12,7 @@ export function LoginView(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = e => {
+  const handleLogin = e => {
     e.preventDefault();
     console.log("multiple");
     axios
@@ -28,6 +28,7 @@ export function LoginView(props) {
       })
       .catch(e => {
         console.log("no such user");
+        return alert("Invalid username or password. Please try again");
       });
   };
 
@@ -57,7 +58,7 @@ export function LoginView(props) {
             onChange={e => setPassword(e.target.value)}
           />
         </Form.Group>
-        <Button variant="primary" id="loginButton" onClick={handleSubmit}>
+        <Button variant="primary" id="loginButton" onClick={handleLogin}>
           Submit
         </Button>
         <Form.Group controlId="newUser">
