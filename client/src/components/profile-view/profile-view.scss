@@ -1,3 +1,10 @@
 $primary-color: rgb(43, 196, 94);
 $secondary-color: rgb(58, 17, 85);
 $font-family: "Playfair Display", serif;
+
+.profile-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-family;
+}

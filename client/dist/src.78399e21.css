@@ -7,6 +7,16 @@
   margin-left: auto;
   width: 50%;
 }
+.movie-view {
+  justify-content: center;
+  margin: auto;
+  font-family: "Playfair Display", serif;
+}
+
+.movie-title {
+  font-weight: bold;
+  font-family: "Playfair Display", serif;
+}
 .loginContainer {
   background-color: #2bc45e;
   color: #3a1155;
@@ -16,6 +26,12 @@
   background-color: #2bc45e;
   color: #3a1155;
   margin-top: 50px;
+}
+.profile-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Playfair Display", serif;
 }
 
 /*# sourceMappingURL=/src.78399e21.css.map */

@@ -1,13 +1,12 @@
-import React from 'react';
+import React from "react";
 
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import './director-view.scss';
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import "./director-view.scss";
 
 import { Link } from "react-router-dom";
 
 export class DirectorView extends React.Component {
-
   constructor() {
     super();
 
@@ -15,21 +14,23 @@ export class DirectorView extends React.Component {
   }
 
   render() {
-    const {director} = this.props;
+    const { director } = this.props;
 
     if (!director) return null;
 
     return (
-      <Card className="director-info" style={{ width: '12rem' }}>
+      <Card className="director-info" style={{ width: "12rem" }}>
         <Card.Body>
           <Card.Title className="director-name">{director.Name}</Card.Title>
           <Card.Text>
-          Biography: <br/>
-          <br/>
-          {director.Bio}
-          <br/>
-          <br/>
-          Birth Year:  {director.BirthYear}
+            Biography: <br />
+            <br />
+            {director.Bio}
+            <br />
+            <br />
+            Born: {director.Birth}
+            <br />
+            Died: {director.Death}
           </Card.Text>
           <div>
             <Link to={`/`}>

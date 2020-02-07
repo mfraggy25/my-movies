@@ -38605,7 +38605,7 @@ module.hot.accept(reloadCSS);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.MovieView = void 0;
+exports.MovieView = MovieView;
 
 var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
 
@@ -38613,82 +38613,64 @@ var _Card = _interopRequireDefault(require("react-bootstrap/Card"));
 
 var _react = _interopRequireDefault(require("react"));
 
+var _axios = _interopRequireDefault(require("axios"));
+
 require("./movie-view.scss");
 
 var _reactRouterDom = require("react-router-dom");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function MovieView(props) {
+  var movie = props.movie,
+      user = props.user;
+  if (!movie) return null;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+  function addToFavourites(event) {
+    event.preventDefault();
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var MovieView =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(MovieView, _React$Component);
-
-  function MovieView() {
-    var _this;
-
-    _classCallCheck(this, MovieView);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(MovieView).call(this));
-    _this.state = {};
-    return _this;
+    _axios.default.post("https://movieswithmichaelf.herokuapp.com/users/".concat(localStorage.getItem("user"), "/movies/").concat(movie._id), {
+      Username: localStorage.getItem("user")
+    }, {
+      headers: {
+        Authorization: "Bearer ".concat(localStorage.getItem("token"))
+      }
+    }).then(function (response) {
+      console.log(response);
+      alert("Movie added to your Favorite List!");
+    }).catch(function (event) {
+      console.log("error adding movie to list");
+      alert("Error adding movie!");
+    });
   }
 
-  _createClass(MovieView, [{
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          movie = _this$props.movie,
-          _onClick = _this$props.onClick;
-      if (!movie) return null;
-      return _react.default.createElement("div", null, _react.default.createElement(_Card.default, {
-        style: {
-          width: "50%"
-        }
-      }, _react.default.createElement(_Card.default.Img, {
-        variant: "top",
-        src: movie.imagepath
-      }), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, movie.Title), _react.default.createElement(_Card.default.Title, null, movie.Description), _react.default.createElement(_reactRouterDom.Link, {
-        to: "/directors/".concat(movie.Director.Name)
-      }, _react.default.createElement(_Button.default, {
-        variant: "link"
-      }, "Director")), _react.default.createElement(_reactRouterDom.Link, {
-        to: "/genres/".concat(movie.Genre.Name)
-      }, _react.default.createElement(_Button.default, {
-        variant: "link"
-      }, "Genre")), _react.default.createElement(_Button.default, {
-        variant: "primary",
-        onClick: function onClick() {
-          return _onClick();
-        },
-        className: "homeButton"
-      }, "Go back"))));
+  return _react.default.createElement("div", null, _react.default.createElement(_Card.default, {
+    style: {
+      width: "50%"
     }
-  }]);
-
-  return MovieView;
-}(_react.default.Component);
-
-exports.MovieView = MovieView;
-},{"react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Card":"../node_modules/react-bootstrap/esm/Card.js","react":"../../node_modules/react/index.js","./movie-view.scss":"components/movie-view/movie-view.scss","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"../node_modules/prop-types-extra/lib/utils/createChainableTypeChecker.js":[function(require,module,exports) {
+  }, _react.default.createElement(_Card.default.Img, {
+    variant: "top",
+    src: movie.imagepath
+  }), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, movie.Title), _react.default.createElement(_Card.default.Title, null, movie.Description), _react.default.createElement(_reactRouterDom.Link, {
+    to: "/directors/".concat(movie.Director.Name)
+  }, _react.default.createElement(_Button.default, {
+    variant: "link"
+  }, "Director")), _react.default.createElement(_reactRouterDom.Link, {
+    to: "/genres/".concat(movie.Genre.Name)
+  }, _react.default.createElement(_Button.default, {
+    variant: "link"
+  }, "Genre")), _react.default.createElement(_Button.default, {
+    variant: "warning",
+    onClick: function onClick(event) {
+      return addToFavourites(event);
+    }
+  }, " ", "Add to Favourites", " "), _react.default.createElement(_reactRouterDom.Link, {
+    to: "/"
+  }, _react.default.createElement(_Button.default, {
+    variant: "outline-info"
+  }, "Go Back")))));
+}
+},{"react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Card":"../node_modules/react-bootstrap/esm/Card.js","react":"../../node_modules/react/index.js","axios":"../node_modules/axios/index.js","./movie-view.scss":"components/movie-view/movie-view.scss","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"../node_modules/prop-types-extra/lib/utils/createChainableTypeChecker.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -40870,14 +40852,14 @@ function (_React$Component) {
       event.preventDefault();
       console.log(favoriteMovie);
 
-      _axios.default.delete("https://movieswithmichaelf.herokuapp.com/users".concat(localStorage.getItem('user'), "/Favourites/").concat(favoriteMovie), {
+      _axios.default.delete("https://movieswithmichaelf.herokuapp.com/users".concat(localStorage.getItem("user"), "/movies/").concat(favoriteMovie), {
         headers: {
-          Authorization: "Bearer ".concat(localStorage.getItem('token'))
+          Authorization: "Bearer ".concat(localStorage.getItem("token"))
         }
-      }).then(function (response) {
-        _this2.getUser(localStorage.getItem('token'));
-      }).catch(function (event) {
-        alert('Oops... something went wrong...');
+      }).then(function (_response) {
+        _this2.getUser(localStorage.getItem("token"));
+      }).catch(function (_event) {
+        alert("Oops... something went wrong...");
       });
     }
   }, {
@@ -40893,25 +40875,21 @@ function (_React$Component) {
       return _react.default.createElement(_Card.default, {
         className: "profile-view",
         style: {
-          width: '24rem'
+          width: "24rem"
         }
-      }, _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, {
-        className: "profile-title"
-      }, "My Profile"), _react.default.createElement(_ListGroup.default, {
-        className: "list-group-flush",
+      }, _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, "My Profile"), _react.default.createElement(_ListGroup.default, {
         variant: "flush"
       }, _react.default.createElement(_ListGroup.default.Item, null, "Username: ", userInfo.Username), _react.default.createElement(_ListGroup.default.Item, null, "Password:******* "), _react.default.createElement(_ListGroup.default.Item, null, "Email: ", userInfo.Email), _react.default.createElement(_ListGroup.default.Item, null, "Birthday: ", userInfo.Birthday && userInfo.Birthday.slice(0, 10)), _react.default.createElement(_ListGroup.default.Item, null, "Favourite Movies:", Favourites.length === 0 && _react.default.createElement("p", null, "No Favourite Movies have been added"), Favourites.length > 0 && Favourites.map(function (favoriteMovie) {
         return _react.default.createElement(_ListGroup.default.Item, null, movie.Title, _react.default.createElement(_reactRouterDom.Link, {
           to: "/movies/".concat(movie._id)
         }, _react.default.createElement(_Button.default, {
-          variant: "info",
-          size: "sm"
+          variant: "info"
         }, "View")), _react.default.createElement(_Button.default, {
           variant: "danger",
           onClick: function onClick() {
             return _this3.deleteMovieFromFavs(movie._id);
           }
-        }, "Remove"));
+        }, "Delete"));
       }))), _react.default.createElement("div", {
         className: "text-center"
       }, _react.default.createElement(_reactRouterDom.Link, {
@@ -40919,7 +40897,7 @@ function (_React$Component) {
       }, _react.default.createElement(_Button.default, {
         className: "button-back",
         variant: "outline-info"
-      }, "BACK")), _react.default.createElement(_reactRouterDom.Link, {
+      }, "Go back")), _react.default.createElement(_reactRouterDom.Link, {
         to: "/update/:Username"
       }, _react.default.createElement(_Button.default, {
         className: "button-update",
@@ -41169,11 +41147,11 @@ function (_React$Component) {
       return _react.default.createElement(_Card.default, {
         className: "director-info",
         style: {
-          width: '12rem'
+          width: "12rem"
         }
       }, _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, {
         className: "director-name"
-      }, director.Name), _react.default.createElement(_Card.default.Text, null, "Biography: ", _react.default.createElement("br", null), _react.default.createElement("br", null), director.Bio, _react.default.createElement("br", null), _react.default.createElement("br", null), "Birth Year:  ", director.BirthYear), _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
+      }, director.Name), _react.default.createElement(_Card.default.Text, null, "Biography: ", _react.default.createElement("br", null), _react.default.createElement("br", null), director.Bio, _react.default.createElement("br", null), _react.default.createElement("br", null), "Born: ", director.Birth, _react.default.createElement("br", null), "Died: ", director.Death), _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
         to: "/"
       }, _react.default.createElement(_Button.default, {
         variant: "info"
@@ -41402,6 +41380,14 @@ function (_React$Component) {
         this.getMovies(accessToken);
         this.getAllUsers(localStorage.getItem("user"), accessToken);
       }
+    }
+  }, {
+    key: "onMovieClick",
+    value: function onMovieClick(movie) {
+      window.location.hash = "#" + movie._id;
+      this.setState({
+        selectedMovieId: movie._id
+      });
     } // onLoggedIn() updates user state of MainView, will be called when user has logged in.
     // Parameter authData gives user and token
 

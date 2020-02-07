@@ -79,6 +79,13 @@ export class MainView extends React.Component {
     }
   }
 
+  onMovieClick(movie) {
+    window.location.hash = "#" + movie._id;
+    this.setState({
+      selectedMovieId: movie._id
+    });
+  }
+
   // onLoggedIn() updates user state of MainView, will be called when user has logged in.
   // Parameter authData gives user and token
   onLoggedIn(authData) {

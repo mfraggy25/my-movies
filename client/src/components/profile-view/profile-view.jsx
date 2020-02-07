@@ -1,15 +1,14 @@
-import React from 'react';
-import axios from 'axios';
+import React from "react";
+import axios from "axios";
 
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
-import './profile-view.scss'
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup";
+import "./profile-view.scss";
 
 import { Link } from "react-router-dom";
 
 export class ProfileView extends React.Component {
-
   constructor() {
     super();
     this.state = {};
@@ -18,54 +17,69 @@ export class ProfileView extends React.Component {
   deleteMovieFromFavs(event, favoriteMovie) {
     event.preventDefault();
     console.log(favoriteMovie);
-    axios.delete(`https://movieswithmichaelf.herokuapp.com/users${localStorage.getItem('user')}/Favourites/${favoriteMovie}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}`}
-    })
-    .then(response => {
-      this.getUser(localStorage.getItem('token'));
-    })
-    .catch(event => {
-      alert('Oops... something went wrong...');
-    });
+    axios
+      .delete(
+        `https://movieswithmichaelf.herokuapp.com/users${localStorage.getItem(
+          "user"
+        )}/movies/${favoriteMovie}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        }
+      )
+      .then(_response => {
+        this.getUser(localStorage.getItem("token"));
+      })
+      .catch(_event => {
+        alert("Oops... something went wrong...");
+      });
   }
 
-
   render() {
-    const {movie,userInfo,Favourites= []} = this.props;
+    const { movie, userInfo, Favourites = [] } = this.props;
 
     return (
-      <Card className="profile-view" style={{ width: '24rem' }}>
+      <Card className="profile-view" style={{ width: "24rem" }}>
         <Card.Body>
-          <Card.Title className="profile-title">My Profile</Card.Title>
-          <ListGroup className="list-group-flush" variant="flush">
+          <Card.Title>My Profile</Card.Title>
+          <ListGroup variant="flush">
             <ListGroup.Item>Username: {userInfo.Username}</ListGroup.Item>
             <ListGroup.Item>Password:******* </ListGroup.Item>
             <ListGroup.Item>Email: {userInfo.Email}</ListGroup.Item>
-            <ListGroup.Item>Birthday: {userInfo.Birthday && userInfo.Birthday.slice(0, 10)}</ListGroup.Item>
-            <ListGroup.Item>Favourite Movies:
-              {Favourites.length === 0 &&
-                <p>No Favourite Movies have been added</p>}
+            <ListGroup.Item>
+              Birthday: {userInfo.Birthday && userInfo.Birthday.slice(0, 10)}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Favourite Movies:
+              {Favourites.length === 0 && (
+                <p>No Favourite Movies have been added</p>
+              )}
               {Favourites.length > 0 &&
-                Favourites.map(favoriteMovie =>
-                (<ListGroup.Item>{movie.Title}
-                  <Link to={`/movies/${movie._id}`}>
-                    <Button variant='info' size='sm'>
-                      View
+                Favourites.map(favoriteMovie => (
+                  <ListGroup.Item>
+                    {movie.Title}
+                    <Link to={`/movies/${movie._id}`}>
+                      <Button variant="info">View</Button>
+                    </Link>
+                    <Button
+                      variant="danger"
+                      onClick={() => this.deleteMovieFromFavs(movie._id)}
+                    >
+                      Delete
                     </Button>
-                  </Link>
-                  <Button variant='danger' onClick={() => this.deleteMovieFromFavs(movie._id)}>
-                    Remove
-                  </Button>
                   </ListGroup.Item>
                 ))}
             </ListGroup.Item>
           </ListGroup>
           <div className="text-center">
             <Link to={`/`}>
-              <Button className="button-back" variant="outline-info">BACK</Button>
+              <Button className="button-back" variant="outline-info">
+                Go back
+              </Button>
             </Link>
             <Link to={`/update/:Username`}>
-              <Button className="button-update" variant="outline-secondary">Update profile</Button>
+              <Button className="button-update" variant="outline-secondary">
+                Update profile
+              </Button>
             </Link>
           </div>
         </Card.Body>
