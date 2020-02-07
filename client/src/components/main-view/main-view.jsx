@@ -3,6 +3,7 @@ import axios from "axios";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { RouterLink } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -13,6 +14,7 @@ import { MovieView } from "../movie-view/movie-view";
 import { LoginView } from "../login-view/login-view";
 import { RegistrationView } from "../registration-view/registration-view";
 import { ProfileView } from "../profile-view/profile-view";
+import { ProfileUpdate } from "../profile-view/profile-update";
 import { DirectorView } from "../director-view/director-view";
 import { GenreView } from "../genre-view/genre-view";
 
@@ -26,7 +28,9 @@ export class MainView extends React.Component {
     this.state = {
       movies: [],
       user: null,
-      users: []
+      users: [],
+      token: "",
+      userInfo: {}
     };
   }
 
@@ -54,7 +58,8 @@ export class MainView extends React.Component {
       .then(response => {
         console.log(response);
         this.setState({
-          users: response.data
+          users: response.data,
+          token: token
         });
       })
       .catch(error => {
@@ -70,7 +75,7 @@ export class MainView extends React.Component {
         user: localStorage.getItem("user")
       });
       this.getMovies(accessToken);
-      this.getUser(localStorage.getItem("user"), accessToken);
+      this.getAllUsers(localStorage.getItem("user"), accessToken);
     }
   }
 
@@ -108,7 +113,7 @@ export class MainView extends React.Component {
   }
 
   render() {
-    const { movies, user, users } = this.state;
+    const { movies, user, users, userInfo, data, token } = this.state;
 
     if (!movies) return <div className="main-view" />;
     if (!user) {
@@ -185,6 +190,17 @@ export class MainView extends React.Component {
               render={({ match }) => {
                 return <ProfileView userInfo={userInfo} />;
               }}
+            />
+            <Route
+              path="/update/:Username"
+              render={() => (
+                <ProfileUpdate
+                  userInfo={userInfo}
+                  user={user}
+                  token={token}
+                  updateUser={data => this.handleProfileUpdate(data)}
+                />
+              )}
             />
           </div>
         </Router>

@@ -1,261 +1,73 @@
-import React from "react";
-import axios from "axios";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import "./profile-view.scss";
+import React from 'react';
+import axios from 'axios';
+
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
+import './profile-view.scss'
 
 import { Link } from "react-router-dom";
 
 export class ProfileView extends React.Component {
+
   constructor() {
     super();
-    this.state = {
-      username: null,
-      password: null,
-      email: null,
-      birthday: null,
-      favoriteMovies: []
-    };
-  }
-
-  componentDidMount() {
-    //authentication
-    let accessToken = localStorage.getItem("token");
-    if (accessToken !== null) {
-      this.getUser(accessToken);
-    }
-  }
-
-  getUser(token) {
-    let username = localStorage.getItem("user");
-    axios
-      .get(`https://movieswithmichaelf.herokuapp.com/users/${username}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      .then(response => {
-        this.setState({
-          username: response.data.Username,
-          password: response.data.Password,
-          email: response.data.Email,
-          birthday: response.data.Birthday,
-          favoriteMovies: response.data.Favorites
-        });
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  }
-
-  handleProfileUpdate(event) {
-    event.preventDefault();
-    axios
-      .put(
-        `https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem(
-          "user"
-        )}`,
-        {
-          username: this.state.usernameNew,
-          password: this.state.passwordNew,
-          email: this.state.emailNew,
-          birthday: this.state.birthdayNew
-        },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        }
-      )
-      .then(res => {
-        console.log("User data has been successfully updated.");
-        alert("Profile successfully updated!");
-        localStorage.setItem("user", this.state.usernameNew);
-      })
-      .catch(function(error) {
-        console.log("Unable to update user profile: " + error);
-        alert("Unable to update user profile: " + error);
-      });
-  }
-
-  addToFavorites(e) {
-    const { movie } = this.props;
-    e.preventDefault();
-    axios
-      .post(
-        `https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem(
-          "user"
-        )}/Movies/${movie._id}`,
-        { username: localStorage.getItem("user") },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        }
-      )
-      .then(res => {
-        alert(`${movie.Title} successfully added to your favorites`);
-      })
-      .catch(error => {
-        alert(`${movie.Title} not added to your favorites` + error);
-      });
+    this.state = {};
   }
 
   deleteMovieFromFavs(event, favoriteMovie) {
     event.preventDefault();
     console.log(favoriteMovie);
-    axios
-      .delete(
-        `https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem(
-          "user"
-        )}/Favorites/${favoriteMovie}`,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        }
-      )
-      .then(response => {
-        this.getUser(localStorage.getItem("token"));
-      })
-      .catch(event => {
-        alert("Something went wrong!");
-      });
+    axios.delete(`https://movieswithmichaelf.herokuapp.com/users${localStorage.getItem('user')}/Favourites/${favoriteMovie}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}`}
+    })
+    .then(response => {
+      this.getUser(localStorage.getItem('token'));
+    })
+    .catch(event => {
+      alert('Oops... something went wrong...');
+    });
   }
 
-  deleteUser() {
-    axios
-      .delete(
-        `https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem(
-          "user"
-        )}`,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        }
-      )
-      .then(res => {
-        alert("Are you sure you want to delete your account?");
-      })
-      .then(res => {
-        alert("Account was successfully deleted");
-      })
-      .then(res => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-
-        this.setState({
-          user: null
-        });
-        window.open("/", "_self");
-      })
-      .catch(e => {
-        alert("Account could not be deleted " + e);
-      });
-  }
-
-  handleChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
 
   render() {
-    const { username, email, birthday, favoriteMovies } = this.state;
+    const {movie,userInfo,Favourites= []} = this.props;
 
     return (
-      <Card style={{ width: "25rem" }}>
-        <Card.Img variant="top" />
+      <Card className="profile-view" style={{ width: '24rem' }}>
         <Card.Body>
-          <Card.Title>My Profile</Card.Title>
-          <ListGroup variant="flush">
-            <ListGroup.Item>Username: {username}</ListGroup.Item>
+          <Card.Title className="profile-title">My Profile</Card.Title>
+          <ListGroup className="list-group-flush" variant="flush">
+            <ListGroup.Item>Username: {userInfo.Username}</ListGroup.Item>
             <ListGroup.Item>Password:******* </ListGroup.Item>
-            <ListGroup.Item>Email: {email}</ListGroup.Item>
-            <ListGroup.Item>
-              Birthday: {birthday && birthday.slice(0, 10)}
-            </ListGroup.Item>
-            <ListGroup.Item>
-              Favorite Movies:
-              <div>
-                {favoriteMovies.length === 0 && (
-                  <div>No Favourite Movies have been added</div>
-                )}
-                {favoriteMovies.length > 0 && (
-                  <ul>
-                    {favoriteMovies.map(favoriteMovie => (
-                      <li key={favoriteMovie}>
-                        <p>
-                          {
-                            JSON.parse(localStorage.getItem("movies")).find(
-                              movie => movie._id === favoriteMovie
-                            ).Title
-                          }
-                        </p>
-                        <Link to={`/movies/${favoriteMovie}`}>
-                          <Button variant="info">Open</Button>
-                        </Link>
-                        <Button
-                          variant="secondary"
-                          onClick={event =>
-                            this.deleteMovieFromFavs(event, favoriteMovie)
-                          }
-                        >
-                          Delete
-                        </Button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+            <ListGroup.Item>Email: {userInfo.Email}</ListGroup.Item>
+            <ListGroup.Item>Birthday: {userInfo.Birthday && userInfo.Birthday.slice(0, 10)}</ListGroup.Item>
+            <ListGroup.Item>Favourite Movies:
+              {Favourites.length === 0 &&
+                <p>No Favourite Movies have been added</p>}
+              {Favourites.length > 0 &&
+                Favourites.map(favoriteMovie =>
+                (<ListGroup.Item>{movie.Title}
+                  <Link to={`/movies/${movie._id}`}>
+                    <Button variant='info' size='sm'>
+                      View
+                    </Button>
+                  </Link>
+                  <Button variant='danger' onClick={() => this.deleteMovieFromFavs(movie._id)}>
+                    Remove
+                  </Button>
+                  </ListGroup.Item>
+                ))}
             </ListGroup.Item>
           </ListGroup>
-          <Form>
-            <div>
-              <p>Please update your information below:</p>
-            </div>
-            <Form.Group controlId="formNewUsername">
-              <Form.Label>Username</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Your username"
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="formPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Your Password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-              />
-              <Form.Text>
-                We'll never share your email with anyone else.
-              </Form.Text>
-            </Form.Group>
-            <Form.Group controlId="formBirthday">
-              <Form.Label>Birthday</Form.Label>
-              <Form.Control
-                type="date"
-                placeholder="MM/DD/YYYY"
-                value={birthday}
-                onChange={e => setBirthday(e.target.value)}
-              />
-            </Form.Group>
-            <div>
-              <Button
-                variant="secondary"
-                type="submit"
-                onClick={handleProfileUpdate}
-              >
-                Update
-              </Button>
-              <Button variant="danger" type="submit" onClick={deleteUser}>
-                Delete profile
-              </Button>
-            </div>
-          </Form>
+          <div className="text-center">
+            <Link to={`/`}>
+              <Button className="button-back" variant="outline-info">BACK</Button>
+            </Link>
+            <Link to={`/update/:Username`}>
+              <Button className="button-update" variant="outline-secondary">Update profile</Button>
+            </Link>
+          </div>
         </Card.Body>
       </Card>
     );
