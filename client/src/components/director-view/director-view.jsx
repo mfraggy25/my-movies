@@ -24,7 +24,6 @@ export class DirectorView extends React.Component {
           <Card.Title className="director-name">{director.Name}</Card.Title>
           <Card.Text>
             Biography: <br />
-            <br />
             {director.Bio}
             <br />
             <br />

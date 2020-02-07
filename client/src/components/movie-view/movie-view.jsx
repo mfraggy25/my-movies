@@ -36,10 +36,10 @@ export function MovieView(props) {
 
   return (
     <div>
-      <Card style={{ width: "50%" }}>
+      <Card style={{ width: "50%" }} className="movie-view">
         <Card.Img variant="top" src={movie.imagepath} />
         <Card.Body>
-          <Card.Title>{movie.Title}</Card.Title>
+          <Card.Title className="movie-title">{movie.Title}</Card.Title>
           <Card.Title>{movie.Description}</Card.Title>
           <Link to={`/directors/${movie.Director.Name}`}>
             <Button variant="link">Director</Button>

@@ -1,3 +1,14 @@
 $primary-color: rgb(43, 196, 94);
 $secondary-color: rgb(58, 17, 85);
 $font-family: "Playfair Display", serif;
+
+.genre-name {
+  font-weight: bold;
+  font-family: $font-family;
+}
+
+.genre-info {
+  font-family: $font-family;
+  justify-content: center;
+  margin: auto;
+}

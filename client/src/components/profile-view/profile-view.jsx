@@ -35,7 +35,7 @@ export class ProfileView extends React.Component {
   }
 
   render() {
-    const { movie, userInfo, Favourites = [] } = this.props;
+    const { movie, userInfo, FavoriteMovies = [] } = this.props;
 
     return (
       <Card className="profile-view" style={{ width: "24rem" }}>
@@ -50,11 +50,11 @@ export class ProfileView extends React.Component {
             </ListGroup.Item>
             <ListGroup.Item>
               Favourite Movies:
-              {Favourites.length === 0 && (
+              {FavoriteMovies.length === 0 && (
                 <p>No Favourite Movies have been added</p>
               )}
-              {Favourites.length > 0 &&
-                Favourites.map(favoriteMovie => (
+              {FavoriteMovies.length > 0 &&
+                FavoriteMovies.map(favoriteMovie => (
                   <ListGroup.Item>
                     {movie.Title}
                     <Link to={`/movies/${movie._id}`}>
