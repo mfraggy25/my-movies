@@ -35,29 +35,29 @@ export class ProfileView extends React.Component {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => {
-        console.log(response);
+        console.log("testing", response);
         this.setState({
-          userInfo: response.data,
+          userData: response.data,
           username: response.data.Username,
           password: response.data.Password,
           email: response.data.Email,
           birthday: response.data.Birthday,
-          Favorites: response.data.Favorites
+          favorites: response.data.Favorites
         });
       })
       .catch(error => {
-        console.log(error);
+        console.log("tested", error);
       });
   }
 
-  deleteMovieFromFavs(event, Favorites) {
+  deleteFavouriteMovie(event, favoriteMovie) {
     event.preventDefault();
-    console.log(Favorites);
+    console.log(favoriteMovie);
     axios
       .delete(
         `https://movieswithmichaelf.herokuapp.com/users${localStorage.getItem(
           "user"
-        )}/movies/${Favorites}`,
+        )}/movies/${favoriteMovie}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         }
@@ -70,54 +70,41 @@ export class ProfileView extends React.Component {
       });
   }
 
-  handleChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
-
   render() {
-    const { userInfo, username, email, birthday, Favorites } = this.state;
+    const { movie, userInfo, Favorites = [] } = this.props;
+    console.log("movie added", Favorites);
 
     return (
       <Card className="profile-view" style={{ width: "24rem" }}>
         <Card.Body>
           <Card.Title>My Profile</Card.Title>
           <ListGroup variant="flush">
-            <ListGroup.Item>Username: {username}</ListGroup.Item>
+            <ListGroup.Item>Username: {userInfo.Username}</ListGroup.Item>
             <ListGroup.Item>Password:******* </ListGroup.Item>
-            <ListGroup.Item>Email: {email}</ListGroup.Item>
+            <ListGroup.Item>Email: {userInfo.Email}</ListGroup.Item>
             <ListGroup.Item>
-              Birthday: {birthday && birthday.slice(0, 10)}
+              Birthday: {userInfo.Birthday && userInfo.Birthday.slice(0, 10)}
             </ListGroup.Item>
             <ListGroup.Item>
               Favourite Movies:
-              <div>
-                {Favorites.length === 0 && (
-                  <div>No Favourite Movies have been added</div>
-                )}
-                {Favorites.length > 0 && (
-                  <ul>
-                    {Favorites.map(Favorites => (
-                      <li key={Favorites}>
-                        <p>
-                          {
-                            JSON.parse(localStorage.getItem("movies")).find(
-                              movie => movie._id === Favorites
-                            ).Title
-                          }
-                        </p>
-                        <Button
-                          variant="secondary"
-                          onClick={event =>
-                            this.deleteMovieFromFavs(event, Favorites)
-                          }
-                        >
-                          Delete
-                        </Button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+              {Favorites.length === 0 && (
+                <p>No Favourite Movies have been added</p>
+              )}
+              {Favorites.length > 0 &&
+                Favorites.map(Favorites => (
+                  <ListGroup.Item>
+                    {movie.Title}
+                    <Link to={`/movies/${movie._id}`}>
+                      <Button variant="info">View</Button>
+                    </Link>
+                    <Button
+                      variant="danger"
+                      onClick={() => this.deleteFavouriteMovie(movie._id)}
+                    >
+                      Delete
+                    </Button>
+                  </ListGroup.Item>
+                ))}
             </ListGroup.Item>
           </ListGroup>
           <div className="text-center">

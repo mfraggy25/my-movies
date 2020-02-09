@@ -38627,18 +38627,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function MovieView(props) {
   var movie = props.movie;
   if (!movie) return null;
+  console.log("adding a movie");
 
   function addToFavourites(event) {
     event.preventDefault();
+    console.log("film");
 
-    _axios.default.post("https://movieswithmichaelf.herokuapp.com/users/".concat(localStorage.getItem("user"), "/movies/").concat(movie._id), {
+    _axios.default.post("https://movieswithmichaelf.herokuapp.com/users/".concat(localStorage.getItem("user"), "/Movies/").concat(movie._id), {
       Username: localStorage.getItem("user")
     }, {
       headers: {
         Authorization: "Bearer ".concat(localStorage.getItem("token"))
       }
     }).then(function (response) {
-      console.log(response);
+      console.log("Movie added", response);
       alert("Movie added to your Favourite List!");
     }).catch(function (event) {
       console.log("error adding movie to list");
@@ -40818,8 +40820,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -40878,29 +40878,29 @@ function (_React$Component) {
           Authorization: "Bearer ".concat(token)
         }
       }).then(function (response) {
-        console.log(response);
+        console.log("testing", response);
 
         _this2.setState({
-          userInfo: response.data,
+          userData: response.data,
           username: response.data.Username,
           password: response.data.Password,
           email: response.data.Email,
           birthday: response.data.Birthday,
-          Favorites: response.data.Favorites
+          favorites: response.data.Favorites
         });
       }).catch(function (error) {
-        console.log(error);
+        console.log("tested", error);
       });
     }
   }, {
-    key: "deleteMovieFromFavs",
-    value: function deleteMovieFromFavs(event, Favorites) {
+    key: "deleteFavouriteMovie",
+    value: function deleteFavouriteMovie(event, favoriteMovie) {
       var _this3 = this;
 
       event.preventDefault();
-      console.log(Favorites);
+      console.log(favoriteMovie);
 
-      _axios.default.delete("https://movieswithmichaelf.herokuapp.com/users".concat(localStorage.getItem("user"), "/movies/").concat(Favorites), {
+      _axios.default.delete("https://movieswithmichaelf.herokuapp.com/users".concat(localStorage.getItem("user"), "/movies/").concat(favoriteMovie), {
         headers: {
           Authorization: "Bearer ".concat(localStorage.getItem("token"))
         }
@@ -40911,21 +40911,16 @@ function (_React$Component) {
       });
     }
   }, {
-    key: "handleChange",
-    value: function handleChange(e) {
-      this.setState(_defineProperty({}, e.target.name, e.target.value));
-    }
-  }, {
     key: "render",
     value: function render() {
       var _this4 = this;
 
-      var _this$state = this.state,
-          userInfo = _this$state.userInfo,
-          username = _this$state.username,
-          email = _this$state.email,
-          birthday = _this$state.birthday,
-          Favorites = _this$state.Favorites;
+      var _this$props = this.props,
+          movie = _this$props.movie,
+          userInfo = _this$props.userInfo,
+          _this$props$Favorites = _this$props.Favorites,
+          Favorites = _this$props$Favorites === void 0 ? [] : _this$props$Favorites;
+      console.log("movie added", Favorites);
       return _react.default.createElement(_Card.default, {
         className: "profile-view",
         style: {
@@ -40933,18 +40928,18 @@ function (_React$Component) {
         }
       }, _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, "My Profile"), _react.default.createElement(_ListGroup.default, {
         variant: "flush"
-      }, _react.default.createElement(_ListGroup.default.Item, null, "Username: ", username), _react.default.createElement(_ListGroup.default.Item, null, "Password:******* "), _react.default.createElement(_ListGroup.default.Item, null, "Email: ", email), _react.default.createElement(_ListGroup.default.Item, null, "Birthday: ", birthday && birthday.slice(0, 10)), _react.default.createElement(_ListGroup.default.Item, null, "Favourite Movies:", _react.default.createElement("div", null, Favorites.length === 0 && _react.default.createElement("div", null, "No Favourite Movies have been added"), Favorites.length > 0 && _react.default.createElement("ul", null, Favorites.map(function (Favorites) {
-        return _react.default.createElement("li", {
-          key: Favorites
-        }, _react.default.createElement("p", null, JSON.parse(localStorage.getItem("movies")).find(function (movie) {
-          return movie._id === Favorites;
-        }).Title), _react.default.createElement(_Button.default, {
-          variant: "secondary",
-          onClick: function onClick(event) {
-            return _this4.deleteMovieFromFavs(event, Favorites);
+      }, _react.default.createElement(_ListGroup.default.Item, null, "Username: ", userInfo.Username), _react.default.createElement(_ListGroup.default.Item, null, "Password:******* "), _react.default.createElement(_ListGroup.default.Item, null, "Email: ", userInfo.Email), _react.default.createElement(_ListGroup.default.Item, null, "Birthday: ", userInfo.Birthday && userInfo.Birthday.slice(0, 10)), _react.default.createElement(_ListGroup.default.Item, null, "Favourite Movies:", Favorites.length === 0 && _react.default.createElement("p", null, "No Favourite Movies have been added"), Favorites.length > 0 && Favorites.map(function (Favorites) {
+        return _react.default.createElement(_ListGroup.default.Item, null, movie.Title, _react.default.createElement(_reactRouterDom.Link, {
+          to: "/movies/".concat(movie._id)
+        }, _react.default.createElement(_Button.default, {
+          variant: "info"
+        }, "View")), _react.default.createElement(_Button.default, {
+          variant: "danger",
+          onClick: function onClick() {
+            return _this4.deleteFavouriteMovie(movie._id);
           }
         }, "Delete"));
-      }))))), _react.default.createElement("div", {
+      }))), _react.default.createElement("div", {
         className: "text-center"
       }, _react.default.createElement(_reactRouterDom.Link, {
         to: "/"

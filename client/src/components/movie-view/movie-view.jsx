@@ -9,14 +9,16 @@ import { Link } from "react-router-dom";
 export function MovieView(props) {
   const { movie } = props;
   if (!movie) return null;
+  console.log("adding a movie");
 
   function addToFavourites(event) {
     event.preventDefault();
+    console.log("film");
     axios
       .post(
         `https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem(
           "user"
-        )}/movies/${movie._id}`,
+        )}/Movies/${movie._id}`,
         {
           Username: localStorage.getItem("user")
         },
@@ -25,7 +27,7 @@ export function MovieView(props) {
         }
       )
       .then(response => {
-        console.log(response);
+        console.log("Movie added", response);
         alert("Movie added to your Favourite List!");
       })
       .catch(event => {
