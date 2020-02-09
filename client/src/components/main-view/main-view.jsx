@@ -28,8 +28,8 @@ export class MainView extends React.Component {
     this.state = {
       movies: [],
       user: null,
-      users: [],
-      token: "",
+      email: "",
+      birthday: "",
       userInfo: {}
     };
   }
@@ -44,6 +44,7 @@ export class MainView extends React.Component {
         this.setState({
           movies: response.data
         });
+        localStorage.setItem("movies", JSON.stringify(response.data));
       })
       .catch(function(error) {
         console.log(error);
@@ -58,8 +59,10 @@ export class MainView extends React.Component {
       .then(response => {
         console.log(response);
         this.setState({
-          users: response.data,
-          token: token
+          email: response.data.Email,
+          birthday: response.data.Birthday,
+          token: token,
+          userInfo: response.data
         });
       })
       .catch(error => {

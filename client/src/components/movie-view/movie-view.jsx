@@ -7,7 +7,7 @@ import "./movie-view.scss";
 import { Link } from "react-router-dom";
 
 export function MovieView(props) {
-  const { movie, user } = props;
+  const { movie } = props;
   if (!movie) return null;
 
   function addToFavourites(event) {
@@ -26,7 +26,7 @@ export function MovieView(props) {
       )
       .then(response => {
         console.log(response);
-        alert("Movie added to your Favorite List!");
+        alert("Movie added to your Favourite List!");
       })
       .catch(event => {
         console.log("error adding movie to list");

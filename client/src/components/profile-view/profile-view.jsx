@@ -11,17 +11,53 @@ import { Link } from "react-router-dom";
 export class ProfileView extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      username: null,
+      password: null,
+      email: null,
+      birthday: null,
+      userInfo: null,
+      Favorites: []
+    };
   }
 
-  deleteMovieFromFavs(event, favoriteMovie) {
+  componentDidMount() {
+    //authentication
+    let accessToken = localStorage.getItem("token");
+    if (accessToken !== null) {
+      this.getAllUsers(accessToken);
+    }
+  }
+
+  getAllUsers(token) {
+    axios
+      .get("https://movieswithmichaelf.herokuapp.com/users", {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(response => {
+        console.log(response);
+        this.setState({
+          userInfo: response.data,
+          username: response.data.Username,
+          password: response.data.Password,
+          email: response.data.Email,
+          birthday: response.data.Birthday,
+          Favorites: response.data.Favorites
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  deleteMovieFromFavs(event, Favorites) {
     event.preventDefault();
-    console.log(favoriteMovie);
+    console.log(Favorites);
     axios
       .delete(
         `https://movieswithmichaelf.herokuapp.com/users${localStorage.getItem(
           "user"
-        )}/movies/${favoriteMovie}`,
+        )}/movies/${Favorites}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         }
@@ -34,52 +70,62 @@ export class ProfileView extends React.Component {
       });
   }
 
+  handleChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
   render() {
-    const { movie, userInfo, FavoriteMovies = [] } = this.props;
+    const { userInfo, username, email, birthday, Favorites } = this.state;
 
     return (
       <Card className="profile-view" style={{ width: "24rem" }}>
         <Card.Body>
           <Card.Title>My Profile</Card.Title>
           <ListGroup variant="flush">
-            <ListGroup.Item>Username: {userInfo.Username}</ListGroup.Item>
+            <ListGroup.Item>Username: {username}</ListGroup.Item>
             <ListGroup.Item>Password:******* </ListGroup.Item>
-            <ListGroup.Item>Email: {userInfo.Email}</ListGroup.Item>
+            <ListGroup.Item>Email: {email}</ListGroup.Item>
             <ListGroup.Item>
-              Birthday: {userInfo.Birthday && userInfo.Birthday.slice(0, 10)}
+              Birthday: {birthday && birthday.slice(0, 10)}
             </ListGroup.Item>
             <ListGroup.Item>
               Favourite Movies:
-              {FavoriteMovies.length === 0 && (
-                <p>No Favourite Movies have been added</p>
-              )}
-              {FavoriteMovies.length > 0 &&
-                FavoriteMovies.map(favoriteMovie => (
-                  <ListGroup.Item>
-                    {movie.Title}
-                    <Link to={`/movies/${movie._id}`}>
-                      <Button variant="info">View</Button>
-                    </Link>
-                    <Button
-                      variant="danger"
-                      onClick={() => this.deleteMovieFromFavs(movie._id)}
-                    >
-                      Delete
-                    </Button>
-                  </ListGroup.Item>
-                ))}
+              <div>
+                {Favorites.length === 0 && (
+                  <div>No Favourite Movies have been added</div>
+                )}
+                {Favorites.length > 0 && (
+                  <ul>
+                    {Favorites.map(Favorites => (
+                      <li key={Favorites}>
+                        <p>
+                          {
+                            JSON.parse(localStorage.getItem("movies")).find(
+                              movie => movie._id === Favorites
+                            ).Title
+                          }
+                        </p>
+                        <Button
+                          variant="secondary"
+                          onClick={event =>
+                            this.deleteMovieFromFavs(event, Favorites)
+                          }
+                        >
+                          Delete
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </ListGroup.Item>
           </ListGroup>
           <div className="text-center">
             <Link to={`/`}>
-              <Button className="button-back" variant="outline-info">
-                Go back
-              </Button>
+              <Button variant="outline-info">Go back</Button>
             </Link>
             <Link to={`/update/:Username`}>
-              <Button className="button-update" variant="outline-secondary">
-                Update profile
-              </Button>
+              <Button variant="outline-secondary">Update profile</Button>
             </Link>
           </div>
         </Card.Body>

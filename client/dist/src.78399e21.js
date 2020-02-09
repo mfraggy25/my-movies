@@ -38625,8 +38625,7 @@ var _reactRouterDom = require("react-router-dom");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function MovieView(props) {
-  var movie = props.movie,
-      user = props.user;
+  var movie = props.movie;
   if (!movie) return null;
 
   function addToFavourites(event) {
@@ -38640,7 +38639,7 @@ function MovieView(props) {
       }
     }).then(function (response) {
       console.log(response);
-      alert("Movie added to your Favorite List!");
+      alert("Movie added to your Favourite List!");
     }).catch(function (event) {
       console.log("error adding movie to list");
       alert("Error adding movie!");
@@ -40819,6 +40818,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -40846,38 +40847,85 @@ function (_React$Component) {
     _classCallCheck(this, ProfileView);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(ProfileView).call(this));
-    _this.state = {};
+    _this.state = {
+      username: null,
+      password: null,
+      email: null,
+      birthday: null,
+      userInfo: null,
+      Favorites: []
+    };
     return _this;
   }
 
   _createClass(ProfileView, [{
-    key: "deleteMovieFromFavs",
-    value: function deleteMovieFromFavs(event, favoriteMovie) {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      //authentication
+      var accessToken = localStorage.getItem("token");
+
+      if (accessToken !== null) {
+        this.getAllUsers(accessToken);
+      }
+    }
+  }, {
+    key: "getAllUsers",
+    value: function getAllUsers(token) {
       var _this2 = this;
 
-      event.preventDefault();
-      console.log(favoriteMovie);
+      _axios.default.get("https://movieswithmichaelf.herokuapp.com/users", {
+        headers: {
+          Authorization: "Bearer ".concat(token)
+        }
+      }).then(function (response) {
+        console.log(response);
 
-      _axios.default.delete("https://movieswithmichaelf.herokuapp.com/users".concat(localStorage.getItem("user"), "/movies/").concat(favoriteMovie), {
+        _this2.setState({
+          userInfo: response.data,
+          username: response.data.Username,
+          password: response.data.Password,
+          email: response.data.Email,
+          birthday: response.data.Birthday,
+          Favorites: response.data.Favorites
+        });
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
+    key: "deleteMovieFromFavs",
+    value: function deleteMovieFromFavs(event, Favorites) {
+      var _this3 = this;
+
+      event.preventDefault();
+      console.log(Favorites);
+
+      _axios.default.delete("https://movieswithmichaelf.herokuapp.com/users".concat(localStorage.getItem("user"), "/movies/").concat(Favorites), {
         headers: {
           Authorization: "Bearer ".concat(localStorage.getItem("token"))
         }
       }).then(function (_response) {
-        _this2.getUser(localStorage.getItem("token"));
+        _this3.getUser(localStorage.getItem("token"));
       }).catch(function (_event) {
         alert("Oops... something went wrong...");
       });
     }
   }, {
+    key: "handleChange",
+    value: function handleChange(e) {
+      this.setState(_defineProperty({}, e.target.name, e.target.value));
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
-      var _this$props = this.props,
-          movie = _this$props.movie,
-          userInfo = _this$props.userInfo,
-          _this$props$FavoriteM = _this$props.FavoriteMovies,
-          FavoriteMovies = _this$props$FavoriteM === void 0 ? [] : _this$props$FavoriteM;
+      var _this$state = this.state,
+          userInfo = _this$state.userInfo,
+          username = _this$state.username,
+          email = _this$state.email,
+          birthday = _this$state.birthday,
+          Favorites = _this$state.Favorites;
       return _react.default.createElement(_Card.default, {
         className: "profile-view",
         style: {
@@ -40885,28 +40933,26 @@ function (_React$Component) {
         }
       }, _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, "My Profile"), _react.default.createElement(_ListGroup.default, {
         variant: "flush"
-      }, _react.default.createElement(_ListGroup.default.Item, null, "Username: ", userInfo.Username), _react.default.createElement(_ListGroup.default.Item, null, "Password:******* "), _react.default.createElement(_ListGroup.default.Item, null, "Email: ", userInfo.Email), _react.default.createElement(_ListGroup.default.Item, null, "Birthday: ", userInfo.Birthday && userInfo.Birthday.slice(0, 10)), _react.default.createElement(_ListGroup.default.Item, null, "Favourite Movies:", FavoriteMovies.length === 0 && _react.default.createElement("p", null, "No Favourite Movies have been added"), FavoriteMovies.length > 0 && FavoriteMovies.map(function (favoriteMovie) {
-        return _react.default.createElement(_ListGroup.default.Item, null, movie.Title, _react.default.createElement(_reactRouterDom.Link, {
-          to: "/movies/".concat(movie._id)
-        }, _react.default.createElement(_Button.default, {
-          variant: "info"
-        }, "View")), _react.default.createElement(_Button.default, {
-          variant: "danger",
-          onClick: function onClick() {
-            return _this3.deleteMovieFromFavs(movie._id);
+      }, _react.default.createElement(_ListGroup.default.Item, null, "Username: ", username), _react.default.createElement(_ListGroup.default.Item, null, "Password:******* "), _react.default.createElement(_ListGroup.default.Item, null, "Email: ", email), _react.default.createElement(_ListGroup.default.Item, null, "Birthday: ", birthday && birthday.slice(0, 10)), _react.default.createElement(_ListGroup.default.Item, null, "Favourite Movies:", _react.default.createElement("div", null, Favorites.length === 0 && _react.default.createElement("div", null, "No Favourite Movies have been added"), Favorites.length > 0 && _react.default.createElement("ul", null, Favorites.map(function (Favorites) {
+        return _react.default.createElement("li", {
+          key: Favorites
+        }, _react.default.createElement("p", null, JSON.parse(localStorage.getItem("movies")).find(function (movie) {
+          return movie._id === Favorites;
+        }).Title), _react.default.createElement(_Button.default, {
+          variant: "secondary",
+          onClick: function onClick(event) {
+            return _this4.deleteMovieFromFavs(event, Favorites);
           }
         }, "Delete"));
-      }))), _react.default.createElement("div", {
+      }))))), _react.default.createElement("div", {
         className: "text-center"
       }, _react.default.createElement(_reactRouterDom.Link, {
         to: "/"
       }, _react.default.createElement(_Button.default, {
-        className: "button-back",
         variant: "outline-info"
       }, "Go back")), _react.default.createElement(_reactRouterDom.Link, {
         to: "/update/:Username"
       }, _react.default.createElement(_Button.default, {
-        className: "button-update",
         variant: "outline-secondary"
       }, "Update profile")))));
     }
@@ -41328,8 +41374,8 @@ function (_React$Component) {
     _this.state = {
       movies: [],
       user: null,
-      users: [],
-      token: "",
+      email: "",
+      birthday: "",
       userInfo: {}
     };
     return _this;
@@ -41349,6 +41395,8 @@ function (_React$Component) {
         _this2.setState({
           movies: response.data
         });
+
+        localStorage.setItem("movies", JSON.stringify(response.data));
       }).catch(function (error) {
         console.log(error);
       });
@@ -41366,8 +41414,10 @@ function (_React$Component) {
         console.log(response);
 
         _this3.setState({
-          users: response.data,
-          token: token
+          email: response.data.Email,
+          birthday: response.data.Birthday,
+          token: token,
+          userInfo: response.data
         });
       }).catch(function (error) {
         console.log(error);
@@ -41638,7 +41688,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58854" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51070" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
