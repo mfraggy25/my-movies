@@ -40865,12 +40865,12 @@ function (_React$Component) {
       var accessToken = localStorage.getItem("token");
 
       if (accessToken !== null) {
-        this.getAllUsers(accessToken);
+        this.getUser(accessToken);
       }
     }
   }, {
-    key: "getAllUsers",
-    value: function getAllUsers(token) {
+    key: "getUser",
+    value: function getUser(token) {
       var _this2 = this;
 
       var username = localStorage.getItem("user");
@@ -40936,7 +40936,7 @@ function (_React$Component) {
         return _react.default.createElement("li", {
           key: favoriteMovie
         }, _react.default.createElement("p", null, JSON.parse(localStorage.getItem("movies")).find(function (movie) {
-          return movie._id === favoriteMovie;
+          return movie._id === Favorite;
         }).Title), _react.default.createElement(_Button.default, {
           variant: "secondary",
           onClick: function onClick(event) {

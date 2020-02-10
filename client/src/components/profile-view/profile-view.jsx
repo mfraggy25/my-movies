@@ -25,11 +25,11 @@ export class ProfileView extends React.Component {
     //authentication
     let accessToken = localStorage.getItem("token");
     if (accessToken !== null) {
-      this.getAllUsers(accessToken);
+      this.getUser(accessToken);
     }
   }
 
-  getAllUsers(token) {
+  getUser(token) {
     let username = localStorage.getItem("user");
     axios
       .get(`https://movieswithmichaelf.herokuapp.com/users/${username}`, {
@@ -99,7 +99,7 @@ export class ProfileView extends React.Component {
                         <p>
                           {
                             JSON.parse(localStorage.getItem("movies")).find(
-                              movie => movie._id === favoriteMovie
+                              movie => movie._id === Favorite
                             ).Title
                           }
                         </p>
