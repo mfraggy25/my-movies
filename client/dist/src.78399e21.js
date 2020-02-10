@@ -40873,7 +40873,9 @@ function (_React$Component) {
     value: function getAllUsers(token) {
       var _this2 = this;
 
-      _axios.default.get("https://movieswithmichaelf.herokuapp.com/users", {
+      var username = localStorage.getItem("user");
+
+      _axios.default.get("https://movieswithmichaelf.herokuapp.com/users/".concat(username), {
         headers: {
           Authorization: "Bearer ".concat(token)
         }
@@ -40881,7 +40883,7 @@ function (_React$Component) {
         console.log("testing", response);
 
         _this2.setState({
-          userData: response.data,
+          userInfo: response.data,
           username: response.data.Username,
           password: response.data.Password,
           email: response.data.Email,
@@ -40915,12 +40917,14 @@ function (_React$Component) {
     value: function render() {
       var _this4 = this;
 
-      var _this$props = this.props,
-          movie = _this$props.movie,
-          userInfo = _this$props.userInfo,
-          _this$props$Favorites = _this$props.Favorites,
-          Favorites = _this$props$Favorites === void 0 ? [] : _this$props$Favorites;
-      console.log("movie added", Favorites);
+      var _this$state = this.state,
+          userInfo = _this$state.userInfo,
+          username = _this$state.username,
+          email = _this$state.email,
+          birthday = _this$state.birthday,
+          _this$state$Favorites = _this$state.Favorites,
+          Favorites = _this$state$Favorites === void 0 ? [] : _this$state$Favorites;
+      console.log("viewing profile", Favorites);
       return _react.default.createElement(_Card.default, {
         className: "profile-view",
         style: {
@@ -40928,18 +40932,18 @@ function (_React$Component) {
         }
       }, _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, "My Profile"), _react.default.createElement(_ListGroup.default, {
         variant: "flush"
-      }, _react.default.createElement(_ListGroup.default.Item, null, "Username: ", userInfo.Username), _react.default.createElement(_ListGroup.default.Item, null, "Password:******* "), _react.default.createElement(_ListGroup.default.Item, null, "Email: ", userInfo.Email), _react.default.createElement(_ListGroup.default.Item, null, "Birthday: ", userInfo.Birthday && userInfo.Birthday.slice(0, 10)), _react.default.createElement(_ListGroup.default.Item, null, "Favourite Movies:", Favorites.length === 0 && _react.default.createElement("p", null, "No Favourite Movies have been added"), Favorites.length > 0 && Favorites.map(function (Favorites) {
-        return _react.default.createElement(_ListGroup.default.Item, null, movie.Title, _react.default.createElement(_reactRouterDom.Link, {
-          to: "/movies/".concat(movie._id)
-        }, _react.default.createElement(_Button.default, {
-          variant: "info"
-        }, "View")), _react.default.createElement(_Button.default, {
-          variant: "danger",
-          onClick: function onClick() {
-            return _this4.deleteFavouriteMovie(movie._id);
+      }, _react.default.createElement(_ListGroup.default.Item, null, "Username: ", username), _react.default.createElement(_ListGroup.default.Item, null, "Password:******* "), _react.default.createElement(_ListGroup.default.Item, null, "Email: ", email), _react.default.createElement(_ListGroup.default.Item, null, "Birthday: ", birthday && birthday.slice(0, 10)), _react.default.createElement(_ListGroup.default.Item, null, "Favourite Movies:", _react.default.createElement("div", null, Favorites.length === 0 && _react.default.createElement("div", null, "No Favourite Movies have been added"), Favorites.length > 0 && _react.default.createElement("ul", null, Favorites.map(function (Favorite) {
+        return _react.default.createElement("li", {
+          key: favoriteMovie
+        }, _react.default.createElement("p", null, JSON.parse(localStorage.getItem("movies")).find(function (movie) {
+          return movie._id === favoriteMovie;
+        }).Title), _react.default.createElement(_Button.default, {
+          variant: "secondary",
+          onClick: function onClick(event) {
+            return _this4.deleteFavouriteMovie(event, favoriteMovie);
           }
         }, "Delete"));
-      }))), _react.default.createElement("div", {
+      }))))), _react.default.createElement("div", {
         className: "text-center"
       }, _react.default.createElement(_reactRouterDom.Link, {
         to: "/"
