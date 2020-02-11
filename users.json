@@ -1,6 +1,6 @@
 {"_id":{"$oid":"5df2f933f0c59ce6e6d51b98"},"Username":"Camera","Password":"movie2","Email":"director@gmail.com","Birthday":{"$date":"1975-02-02T00:00:00.000Z"},"Favorites":[{"_id":{"$oid":"5df2dbaff0c59ce6e6d51b8c"}},{"_id":{"$oid":"5df2dd70f0c59ce6e6d51b8d"}},{"_id":{"$oid":"5df2deebf0c59ce6e6d51b8e"}}]}
 {"_id":{"$oid":"5df2fa1bf0c59ce6e6d51b99"},"Username":"Action","Password":"movie3","Email":"movieproducer@gmail.com","Birthday":{"$date":"1990-06-06T00:00:00.000Z"},"Favorites":[{"_id":{"$oid":"5df2e027f0c59ce6e6d51b8f"}},{"_id":{"$oid":"5df2e16cf0c59ce6e6d51b90"}},{"_id":{"$oid":"5df2e40df0c59ce6e6d51b91"}}]}
 {"_id":{"$oid":"5df306aff0c59ce6e6d51b9a"},"Username":"Hollywood","Password":"movie4","Email":"screenwriter@gmail.com","Birthday":{"$date":"1972-09-09T00:00:00.000Z"}}
-{"_id":{"$oid":"5e025e4d0beade06c2bec5ea"},"FavoriteMovies":[],"Username":"Star","Password":"movie5","Email":"actress@gmail.com","Birthday":{"$date":"1990-10-10T00:00:00.000Z"},"__v":0}
-{"_id":{"$oid":"5e0eba81e1dc1f020d801d12"},"FavoriteMovies":[],"Username":"Lights","Password":"movie1","Email":"actor@gmail.com","Birthday":{"$date":"1990-08-08T00:00:00.000Z"},"__v":0}
-{"_id":{"$oid":"5e0fbf66c4792e034298aa53"},"FavoriteMovies":[],"Username":"michaelf25","Password":"greece1","Email":"michael.fragiskatos@gmail.com","Birthday":{"$date":"1988-06-08T00:00:00.000Z"},"__v":0}
+{"_id":{"$oid":"5e025e4d0beade06c2bec5ea"},"Favorites":[],"Username":"Star","Password":"movie5","Email":"actress@gmail.com","Birthday":{"$date":"1990-10-10T00:00:00.000Z"},"__v":0}
+{"_id":{"$oid":"5e0eba81e1dc1f020d801d12"},"Favorites":[],"Username":"Lights","Password":"movie1","Email":"actor@gmail.com","Birthday":{"$date":"1990-08-08T00:00:00.000Z"},"__v":0}
+{"_id":{"$oid":"5e0fbf66c4792e034298aa53"},"Favorites":[],"Username":"michaelf25","Password":"greece1","Email":"michael.fragiskatos@gmail.com","Birthday":{"$date":"1988-06-08T00:00:00.000Z"},"__v":0}

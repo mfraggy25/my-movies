@@ -50,7 +50,7 @@ export class ProfileView extends React.Component {
           password: response.data.Password,
           email: response.data.Email,
           birthday: response.data.Birthday,
-          favorites: response.data.Favorites
+          Favorites: response.data.Favorites
         });
       })
       .catch(error => {
@@ -58,14 +58,14 @@ export class ProfileView extends React.Component {
       });
   }
 
-  deleteFavouriteMovie(event, favoriteMovie) {
+  deleteFavouriteMovie(event, Favorites) {
     event.preventDefault();
-    console.log(favoriteMovie);
+    console.log(Favorites);
     axios
       .delete(
-        `https://movieswithmichaelf.herokuapp.com/users${localStorage.getItem(
+        `https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem(
           "user"
-        )}/movies/${favoriteMovie}`,
+        )}/movies/${Favorites}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         }
@@ -102,7 +102,7 @@ export class ProfileView extends React.Component {
                 {Favorites.length > 0 && (
                   <ul>
                     {Favorites.map(Favorite => (
-                      <li key={favoriteMovie}>
+                      <li key={Favorites}>
                         <p>
                           {
                             JSON.parse(localStorage.getItem("movies")).find(
@@ -113,7 +113,7 @@ export class ProfileView extends React.Component {
                         <Button
                           variant="secondary"
                           onClick={event =>
-                            this.deleteFavouriteMovie(event, favoriteMovie)
+                            this.deleteFavouriteMovie(event, Favorites)
                           }
                         >
                           Delete

@@ -40888,7 +40888,7 @@ function (_React$Component) {
           password: response.data.Password,
           email: response.data.Email,
           birthday: response.data.Birthday,
-          favorites: response.data.Favorites
+          Favorites: response.data.Favorites
         });
       }).catch(function (error) {
         console.log("tested", error);
@@ -40896,13 +40896,13 @@ function (_React$Component) {
     }
   }, {
     key: "deleteFavouriteMovie",
-    value: function deleteFavouriteMovie(event, favoriteMovie) {
+    value: function deleteFavouriteMovie(event, Favorites) {
       var _this3 = this;
 
       event.preventDefault();
-      console.log(favoriteMovie);
+      console.log(Favorites);
 
-      _axios.default.delete("https://movieswithmichaelf.herokuapp.com/users".concat(localStorage.getItem("user"), "/movies/").concat(favoriteMovie), {
+      _axios.default.delete("https://movieswithmichaelf.herokuapp.com/users/".concat(localStorage.getItem("user"), "/movies/").concat(Favorites), {
         headers: {
           Authorization: "Bearer ".concat(localStorage.getItem("token"))
         }
@@ -40934,13 +40934,13 @@ function (_React$Component) {
         variant: "flush"
       }, _react.default.createElement(_ListGroup.default.Item, null, "Username: ", username), _react.default.createElement(_ListGroup.default.Item, null, "Password:******* "), _react.default.createElement(_ListGroup.default.Item, null, "Email: ", email), _react.default.createElement(_ListGroup.default.Item, null, "Birthday: ", birthday && birthday.slice(0, 10)), _react.default.createElement(_ListGroup.default.Item, null, "Favourite Movies:", _react.default.createElement("div", null, Favorites.length === 0 && _react.default.createElement("div", null, "No Favourite Movies have been added"), Favorites.length > 0 && _react.default.createElement("ul", null, Favorites.map(function (Favorite) {
         return _react.default.createElement("li", {
-          key: favoriteMovie
+          key: Favorites
         }, _react.default.createElement("p", null, JSON.parse(localStorage.getItem("movies")).find(function (movie) {
           return movie._id === Favorite;
         }).Title), _react.default.createElement(_Button.default, {
           variant: "secondary",
           onClick: function onClick(event) {
-            return _this4.deleteFavouriteMovie(event, favoriteMovie);
+            return _this4.deleteFavouriteMovie(event, Favorites);
           }
         }, "Delete"));
       }))))), _react.default.createElement("div", {
@@ -41687,7 +41687,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59851" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60085" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
