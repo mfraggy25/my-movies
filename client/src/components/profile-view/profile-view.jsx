@@ -43,7 +43,7 @@ export class ProfileView extends React.Component {
         }
       )
       .then(response => {
-        console.log("testing", response);
+        console.log(response);
         this.setState({
           userInfo: response.data,
           username: response.data.Username,
@@ -60,7 +60,7 @@ export class ProfileView extends React.Component {
 
   deleteFavouriteMovie(event, Favorite) {
     event.preventDefault();
-    console.log(Favorite);
+    console.log("delete me", Favorite);
     axios
       .delete(
         `https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem(
@@ -80,7 +80,6 @@ export class ProfileView extends React.Component {
 
   render() {
     const { userInfo, username, email, birthday, Favorites = [] } = this.state;
-    console.log("viewing profile", Favorites);
 
     return (
       <Card className="profile-view" style={{ width: "24rem" }}>

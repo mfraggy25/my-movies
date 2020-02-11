@@ -40880,7 +40880,7 @@ function (_React$Component) {
           Authorization: "Bearer ".concat(token)
         }
       }).then(function (response) {
-        console.log("testing", response);
+        console.log(response);
 
         _this2.setState({
           userInfo: response.data,
@@ -40900,7 +40900,7 @@ function (_React$Component) {
       var _this3 = this;
 
       event.preventDefault();
-      console.log(Favorite);
+      console.log("delete me", Favorite);
 
       _axios.default.delete("https://movieswithmichaelf.herokuapp.com/users/".concat(localStorage.getItem("user"), "/movies/").concat(Favorite), {
         headers: {
@@ -40924,7 +40924,6 @@ function (_React$Component) {
           birthday = _this$state.birthday,
           _this$state$Favorites = _this$state.Favorites,
           Favorites = _this$state$Favorites === void 0 ? [] : _this$state$Favorites;
-      console.log("viewing profile", Favorites);
       return _react.default.createElement(_Card.default, {
         className: "profile-view",
         style: {
