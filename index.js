@@ -266,7 +266,7 @@ app.delete(
   function(req, res) {
     Users.findOneAndUpdate(
       { Username: req.params.Username },
-      { $pull: { Favorites: req.params.MovieID } },
+      { $pull: { Favorite: req.params.MovieID } },
       { new: true }, // This line makes sure that the updated document is returned
       (error, updatedUser) => {
         if (error) {
