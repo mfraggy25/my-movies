@@ -40908,7 +40908,9 @@ function (_React$Component) {
         }
       }).then(function (response) {
         _this3.getUser(localStorage.getItem("token"));
-      }).catch(function (event) {
+
+        alert("Movie deleted!");
+      }).catch(function (error) {
         alert("Something went wrong!");
       });
     }
@@ -40918,7 +40920,6 @@ function (_React$Component) {
       var _this4 = this;
 
       var _this$state = this.state,
-          userInfo = _this$state.userInfo,
           username = _this$state.username,
           email = _this$state.email,
           birthday = _this$state.birthday,
@@ -41692,7 +41693,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60085" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63520" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

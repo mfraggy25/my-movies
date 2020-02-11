@@ -72,14 +72,15 @@ export class ProfileView extends React.Component {
       )
       .then(response => {
         this.getUser(localStorage.getItem("token"));
+        alert("Movie deleted!");
       })
-      .catch(event => {
+      .catch(function(error) {
         alert("Something went wrong!");
       });
   }
 
   render() {
-    const { userInfo, username, email, birthday, Favorites = [] } = this.state;
+    const { username, email, birthday, Favorites = [] } = this.state;
 
     return (
       <Card className="profile-view" style={{ width: "24rem" }}>
