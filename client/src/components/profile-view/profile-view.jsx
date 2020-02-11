@@ -60,7 +60,6 @@ export class ProfileView extends React.Component {
 
   deleteFavouriteMovie(event, Favorite) {
     event.preventDefault();
-    console.log("delete me", Favorite);
     axios
       .delete(
         `https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem(
@@ -78,7 +77,10 @@ export class ProfileView extends React.Component {
         alert("Something went wrong!");
       });
   }
-
+  
+  handleChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+}
   render() {
     const { username, email, birthday, Favorites = [] } = this.state;
 
