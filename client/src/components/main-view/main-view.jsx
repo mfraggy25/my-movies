@@ -51,7 +51,7 @@ export class MainView extends React.Component {
       });
   }
 
-  getAllUsers(token) {
+  getUser(token) {
     axios
       .get("https://movieswithmichaelf.herokuapp.com/users", {
         headers: { Authorization: `Bearer ${token}` }
@@ -78,7 +78,7 @@ export class MainView extends React.Component {
         user: localStorage.getItem("user")
       });
       this.getMovies(accessToken);
-      this.getAllUsers(localStorage.getItem("user"), accessToken);
+      this.getUser(localStorage.getItem("user"), accessToken);
     }
   }
 

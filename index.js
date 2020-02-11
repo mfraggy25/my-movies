@@ -194,6 +194,22 @@ app.post(
   }
 );
 
+//Gets user profile by username
+app.get(
+  "/users/:Username",
+  passport.authenticate("jwt", { session: false }),
+  function(req, res) {
+    Users.findOne({ Username: req.params.Username })
+      .then(function(user) {
+        res.json(user);
+      })
+      .catch(function(err) {
+        console.error(err);
+        res.status(500).send("Error:" + err);
+      });
+  }
+);
+
 // Update the user info
 app.put(
   "/users/:Username",

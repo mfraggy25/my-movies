@@ -40873,9 +40873,9 @@ function (_React$Component) {
     value: function getUser(token) {
       var _this2 = this;
 
-      var username = localStorage.getItem("user");
-
-      _axios.default.get("https://movieswithmichaelf.herokuapp.com/users/".concat(username), {
+      _axios.default.get("https://movieswithmichaelf.herokuapp.com/users/".concat(localStorage.getItem("user")), {
+        username: localStorage.getItem("user")
+      }, {
         headers: {
           Authorization: "Bearer ".concat(token)
         }
@@ -41401,8 +41401,8 @@ function (_React$Component) {
       });
     }
   }, {
-    key: "getAllUsers",
-    value: function getAllUsers(token) {
+    key: "getUser",
+    value: function getUser(token) {
       var _this3 = this;
 
       _axios.default.get("https://movieswithmichaelf.herokuapp.com/users", {
@@ -41433,7 +41433,7 @@ function (_React$Component) {
           user: localStorage.getItem("user")
         });
         this.getMovies(accessToken);
-        this.getAllUsers(localStorage.getItem("user"), accessToken);
+        this.getUser(localStorage.getItem("user"), accessToken);
       }
     }
   }, {
