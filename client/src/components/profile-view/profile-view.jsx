@@ -58,23 +58,23 @@ export class ProfileView extends React.Component {
       });
   }
 
-  deleteFavouriteMovie(event, Favorites) {
+  deleteFavouriteMovie(event, Favorite) {
     event.preventDefault();
-    console.log(Favorites);
+    console.log(Favorite);
     axios
       .delete(
         `https://movieswithmichaelf.herokuapp.com/users/${localStorage.getItem(
           "user"
-        )}/movies/${Favorites}`,
+        )}/movies/${Favorite}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         }
       )
-      .then(_response => {
+      .then(response => {
         this.getUser(localStorage.getItem("token"));
       })
-      .catch(_event => {
-        alert("Oops... something went wrong...");
+      .catch(event => {
+        alert("Something went wrong!");
       });
   }
 
@@ -102,7 +102,7 @@ export class ProfileView extends React.Component {
                 {Favorites.length > 0 && (
                   <ul>
                     {Favorites.map(Favorite => (
-                      <li key={Favorites}>
+                      <li key={Favorite}>
                         <p>
                           {
                             JSON.parse(localStorage.getItem("movies")).find(
@@ -110,10 +110,16 @@ export class ProfileView extends React.Component {
                             ).Title
                           }
                         </p>
+                        <Link to={`/movies/${Favorite}`}>
+                          <Button size="sm" variant="info">
+                            Open
+                          </Button>
+                        </Link>
                         <Button
+                          size="sm"
                           variant="secondary"
                           onClick={event =>
-                            this.deleteFavouriteMovie(event, Favorites)
+                            this.deleteFavouriteMovie(event, Favorite)
                           }
                         >
                           Delete

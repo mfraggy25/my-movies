@@ -40896,20 +40896,20 @@ function (_React$Component) {
     }
   }, {
     key: "deleteFavouriteMovie",
-    value: function deleteFavouriteMovie(event, Favorites) {
+    value: function deleteFavouriteMovie(event, Favorite) {
       var _this3 = this;
 
       event.preventDefault();
-      console.log(Favorites);
+      console.log(Favorite);
 
-      _axios.default.delete("https://movieswithmichaelf.herokuapp.com/users/".concat(localStorage.getItem("user"), "/movies/").concat(Favorites), {
+      _axios.default.delete("https://movieswithmichaelf.herokuapp.com/users/".concat(localStorage.getItem("user"), "/movies/").concat(Favorite), {
         headers: {
           Authorization: "Bearer ".concat(localStorage.getItem("token"))
         }
-      }).then(function (_response) {
+      }).then(function (response) {
         _this3.getUser(localStorage.getItem("token"));
-      }).catch(function (_event) {
-        alert("Oops... something went wrong...");
+      }).catch(function (event) {
+        alert("Something went wrong!");
       });
     }
   }, {
@@ -40934,13 +40934,19 @@ function (_React$Component) {
         variant: "flush"
       }, _react.default.createElement(_ListGroup.default.Item, null, "Username: ", username), _react.default.createElement(_ListGroup.default.Item, null, "Password:******* "), _react.default.createElement(_ListGroup.default.Item, null, "Email: ", email), _react.default.createElement(_ListGroup.default.Item, null, "Birthday: ", birthday && birthday.slice(0, 10)), _react.default.createElement(_ListGroup.default.Item, null, "Favourite Movies:", _react.default.createElement("div", null, Favorites.length === 0 && _react.default.createElement("div", null, "No Favourite Movies have been added"), Favorites.length > 0 && _react.default.createElement("ul", null, Favorites.map(function (Favorite) {
         return _react.default.createElement("li", {
-          key: Favorites
+          key: Favorite
         }, _react.default.createElement("p", null, JSON.parse(localStorage.getItem("movies")).find(function (movie) {
           return movie._id === Favorite;
-        }).Title), _react.default.createElement(_Button.default, {
+        }).Title), _react.default.createElement(_reactRouterDom.Link, {
+          to: "/movies/".concat(Favorite)
+        }, _react.default.createElement(_Button.default, {
+          size: "sm",
+          variant: "info"
+        }, "Open")), _react.default.createElement(_Button.default, {
+          size: "sm",
           variant: "secondary",
           onClick: function onClick(event) {
-            return _this4.deleteFavouriteMovie(event, Favorites);
+            return _this4.deleteFavouriteMovie(event, Favorite);
           }
         }, "Delete"));
       }))))), _react.default.createElement("div", {
