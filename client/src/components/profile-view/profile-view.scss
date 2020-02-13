@@ -13,7 +13,10 @@ $font-family: "Playfair Display", serif;
   font-family: $font-family;
 }
 
-.delete-movie-button,
 .open-movie-button {
-  margin-left: 20%;
+  align-items: right;
+}
+
+.delete-movie-button {
+  align-items: right;
 }
