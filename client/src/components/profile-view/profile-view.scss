@@ -15,5 +15,10 @@ $font-family: "Playfair Display", serif;
 
 .profile-view-fave-movies {
   max-width: 80%;
-  text-align: right;
+  text-align: left;
+}
+
+.delete-movie-button,
+.open-movie-button {
+    margin-left: 20%;
 }

@@ -116,11 +116,12 @@ export class ProfileView extends React.Component {
                           }
                         </p>
                         <Link to={`/movies/${Favorite}`}>
-                          <Button size="sm" variant="info">
+                          <Button className="open-movie-button" size="sm" variant="info">
                             Open
                           </Button>
                         </Link>
                         <Button
+                        className="delete-movie-button"
                           size="sm"
                           variant="secondary"
                           onClick={event =>
