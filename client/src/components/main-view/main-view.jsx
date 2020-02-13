@@ -1,15 +1,18 @@
 import React from "react";
 import axios from "axios";
+import { connect } from "react-redux";
+// #0
+import { setMovies, setLoggedUser } from "../../actions/actions";
+
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { RouterLink } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import "./main-view.scss";
 
-import { MovieCard } from "../movie-card/movie-card";
+import MoviesList from "../movies-list/movies-list";
 import { MovieView } from "../movie-view/movie-view";
 import { LoginView } from "../login-view/login-view";
 import { RegistrationView } from "../registration-view/registration-view";
@@ -128,7 +131,7 @@ export class MainView extends React.Component {
     if (!movies) return <div className="main-view" />;
     if (!user) {
       return (
-        <Router>
+        <Router basename="/client">
           <div className="main-view">
             <Route
               exact
@@ -144,77 +147,90 @@ export class MainView extends React.Component {
     } else {
       return (
         <Router>
-          <div className="main-view">
-            <Link component={RouterLink} to={`/users/${user}`}>
-              <Button variant="outline-dark">Profile</Button>
-            </Link>
-            <Button variant="primary" onClick={() => this.handleLogout()}>
-              Log out
-            </Button>
-            <Route
-              exact
-              path="/"
-              render={() =>
-                movies.map(m => <MovieCard key={m._id} movie={m} />)
-              }
-            />
-            <Route
-              path="/movies/:movieId"
-              render={({ match }) => (
-                <MovieView
-                  movie={movies.find(m => m._id === match.params.movieId)}
+          <Container>
+            <Row>
+              <div className="main-view">
+                <Link component={RouterLink} to={`/users/${user}`}>
+                  <Button variant="outline-dark">Profile</Button>
+                </Link>
+                <Button variant="primary" onClick={() => this.handleLogout()}>
+                  Log out
+                </Button>
+                <Route
+                  exact
+                  path="/"
+                  render={() => movies.map(m => <MoviesList movies={movies} />)}
                 />
-              )}
-            />
-            <Route
-              path="/directors/:name"
-              render={({ match }) => {
-                if (!movies || !movies.length)
-                  return <div className="main-view" />;
-                return (
-                  <DirectorView
-                    director={
-                      movies.find(m => m.Director.Name === match.params.name)
-                        .Director
-                    }
-                  />
-                );
-              }}
-            />
-            <Route
-              path="/genres/:name"
-              render={({ match }) => {
-                if (!movies || !movies.length)
-                  return <div className="main-view" />;
-                return (
-                  <GenreView
-                    genre={
-                      movies.find(m => m.Genre.Name === match.params.name).Genre
-                    }
-                  />
-                );
-              }}
-            />
-            <Route
-              path="/users/:Username"
-              render={({ match }) => {
-                return <ProfileView userInfo={userInfo} />;
-              }}
-            />
-            <Route
-              path="/update/:Username"
-              render={() => (
-                <ProfileUpdate
-                  userInfo={userInfo}
-                  user={user}
-                  token={token}
-                  updateUser={data => this.handleProfileUpdate(data)}
+                <Route
+                  path="/movies/:movieId"
+                  render={({ match }) => (
+                    <MovieView
+                      movie={movies.find(m => m._id === match.params.movieId)}
+                    />
+                  )}
                 />
-              )}
-            />
-          </div>
+                <Route
+                  path="/directors/:name"
+                  render={({ match }) => {
+                    if (!movies || !movies.length)
+                      return <div className="main-view" />;
+                    return (
+                      <DirectorView
+                        director={
+                          movies.find(
+                            m => m.Director.Name === match.params.name
+                          ).Director
+                        }
+                      />
+                    );
+                  }}
+                />
+                <Route
+                  path="/genres/:name"
+                  render={({ match }) => {
+                    if (!movies || !movies.length)
+                      return <div className="main-view" />;
+                    return (
+                      <GenreView
+                        genre={
+                          movies.find(m => m.Genre.Name === match.params.name)
+                            .Genre
+                        }
+                      />
+                    );
+                  }}
+                />
+                <Route
+                  path="/users/:Username"
+                  render={({ match }) => {
+                    return <ProfileView userInfo={userInfo} />;
+                  }}
+                />
+                <Route
+                  path="/update/:Username"
+                  render={() => (
+                    <ProfileUpdate
+                      userInfo={userInfo}
+                      user={user}
+                      token={token}
+                      updateUser={data => this.handleProfileUpdate(data)}
+                    />
+                  )}
+                />
+              </div>
+            </Row>
+          </Container>
         </Router>
       );
     }
   }
 }
+
+let mapStateToProps = state => {
+  return { movies: state.movies, loggedInUser: state.loggedInUser };
+};
+const mapDispatchToProps = {
+  setMovies,
+  setLoggedInUser
+};
+export default connect(mapStateToProps, mapDispatchToProps)(MainView);

@@ -77,10 +77,10 @@ export class ProfileView extends React.Component {
         alert("Something went wrong!");
       });
   }
-  
+
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
-}
+  }
   render() {
     const { username, email, birthday, Favorites = [] } = this.state;
 
@@ -104,7 +104,10 @@ export class ProfileView extends React.Component {
                 {Favorites.length > 0 && (
                   <ul>
                     {Favorites.map(Favorite => (
-                      <li key={Favorite}>
+                      <ListGroup.Item
+                        className="profile-view-fave-movies"
+                        key={Favorite}
+                      >
                         <p>
                           {
                             JSON.parse(localStorage.getItem("movies")).find(
@@ -126,7 +129,7 @@ export class ProfileView extends React.Component {
                         >
                           Delete
                         </Button>
-                      </li>
+                      </ListGroup.Item>
                     ))}
                   </ul>
                 )}
