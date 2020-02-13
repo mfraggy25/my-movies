@@ -130,7 +130,7 @@ export class ProfileView extends React.Component {
                           }
                         >
                           Delete
-                        </Button>
+                        </Button>                        
                       </li>
                     ))}
                   </ul>
