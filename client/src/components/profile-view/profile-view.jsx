@@ -104,10 +104,7 @@ export class ProfileView extends React.Component {
                 {Favorites.length > 0 && (
                   <ul>
                     {Favorites.map(Favorite => (
-                      <ListGroup.Item
-                        className="profile-view-fave-movies"
-                        key={Favorite}
-                      >
+                      <ListGroup.Item key={Favorite}>
                         <p>
                           {
                             JSON.parse(localStorage.getItem("movies")).find(
@@ -116,12 +113,16 @@ export class ProfileView extends React.Component {
                           }
                         </p>
                         <Link to={`/movies/${Favorite}`}>
-                          <Button className="open-movie-button" size="sm" variant="info">
+                          <Button
+                            className="open-movie-button"
+                            size="sm"
+                            variant="info"
+                          >
                             Open
                           </Button>
                         </Link>
                         <Button
-                        className="delete-movie-button"
+                          className="delete-movie-button"
                           size="sm"
                           variant="secondary"
                           onClick={event =>
