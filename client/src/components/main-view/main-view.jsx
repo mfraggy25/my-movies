@@ -231,6 +231,6 @@ let mapStateToProps = state => {
 };
 const mapDispatchToProps = {
   setMovies,
-  setLoggedInUser
+  setLoggedUser
 };
 export default connect(mapStateToProps, mapDispatchToProps)(MainView);
