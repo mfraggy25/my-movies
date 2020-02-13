@@ -104,7 +104,7 @@ export class ProfileView extends React.Component {
                 {Favorites.length > 0 && (
                   <ul>
                     {Favorites.map(Favorite => (
-                      <ListGroup.Item key={Favorite}>
+                      <li className="li" key={Favorite}>
                         <p>
                           {
                             JSON.parse(localStorage.getItem("movies")).find(
@@ -131,7 +131,7 @@ export class ProfileView extends React.Component {
                         >
                           Delete
                         </Button>
-                      </ListGroup.Item>
+                      </li>
                     ))}
                   </ul>
                 )}
