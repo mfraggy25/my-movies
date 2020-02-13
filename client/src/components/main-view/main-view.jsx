@@ -115,7 +115,7 @@ export class MainView extends React.Component {
     this.setState({
       user: null
     });
-    window.open("/", "_self");
+    window.open("/client", "_self");
   }
 
   handleProfileUpdate(data) {

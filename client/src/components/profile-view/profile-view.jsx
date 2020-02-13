@@ -85,7 +85,7 @@ export class ProfileView extends React.Component {
     const { username, email, birthday, Favorites = [] } = this.state;
 
     return (
-      <Card className="profile-view" style={{ width: "24rem" }}>
+      <Card className="profile-view" style={{ width: "50rem" }}>
         <Card.Body>
           <Card.Title>My Profile</Card.Title>
           <ListGroup variant="flush">

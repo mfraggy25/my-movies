@@ -91,7 +91,7 @@ export function RegistrationView(props) {
         <Button variant="primary" type="submit" onClick={handleSubmit}>
           Submit
         </Button>
-        <Link to={"/"}>
+        <Link to={"/client"}>
           <Button variant="secondary" type="link">
             Already registered?
           </Button>
