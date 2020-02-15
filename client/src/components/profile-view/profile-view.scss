@@ -13,6 +13,13 @@ $font-family: "Playfair Display", serif;
   font-family: $font-family;
 }
 
+.update-form {
+  background-color: $primary-color;
+  color: $secondary-color;
+  margin-top: 50px;
+  font-family: $font-family;
+}
+
 .open-movie-button {
   align-items: right;
 }

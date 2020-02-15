@@ -3,6 +3,7 @@ import Card from "react-bootstrap/Card";
 import React from "react";
 import axios from "axios";
 import "./movie-view.scss";
+import PropTypes from 'prop-types';
 
 import { Link } from "react-router-dom";
 
@@ -61,4 +62,13 @@ export function MovieView(props) {
       </Card>
     </div>
   );
+}
+
+MovieView.propTypes = {
+  movie: PropTypes.shape({
+      _id: PropTypes.string,
+      title: PropTypes.string,
+      description: PropTypes.string,
+      imagePath: PropTypes.string
+  }).isRequired
 }
