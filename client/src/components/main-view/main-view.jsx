@@ -160,7 +160,7 @@ export class MainView extends React.Component {
                 <Route
                   exact
                   path="/"
-                  render={() => movies.map(m => <MoviesList movies={movies} />)}
+                  render={() => <MoviesList movies={movies} />}
                 />
                 <Route
                   path="/movies/:movieId"
