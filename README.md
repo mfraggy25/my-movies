@@ -50,6 +50,6 @@ npm start
  * uuid
  
  ## Images
- ![Screenshot 1](/images/Screenshot1.png)
- ![Screenshot 2](/images/Screenshot2.png)
+ ![Screenshot1](https:/github.com/mfraggy25/my-movies/images/Screenshot1.png)
+ ![Screenshot2](https:/github.com/mfraggy25/my-movies/images/Screenshot2.png)
  
