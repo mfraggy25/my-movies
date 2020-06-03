@@ -1,5 +1,5 @@
 # My Movies
-A MERN ((MongoDB, ExpressJS, ReactJS, and NodeJS) -stack app that allows users to access a movie library providing details on movies, genres, and directors
+A MERN (MongoDB, ExpressJS, ReactJS, and NodeJS) -stack app that allows users to access a movie library providing details on movies, genres, and directors
 
 **Link to working site:** http://movieswithmichaelf.herokuapp.com/client/
 
@@ -50,6 +50,6 @@ npm start
  * uuid
  
  ## Images
- ![Screenshot1](https:/github.com/mfraggy25/my-movies/images/Screenshot1.png)
- ![Screenshot2](https:/github.com/mfraggy25/my-movies/images/Screenshot2.png)
+ ![Screenshot1](https://github.com/mfraggy25/my-movies/blob/master/images/Screenshot1.PNG)
+ ![Screenshot2](https://github.com/mfraggy25/my-movies/blob/master/images/Screenshot2.PNG)
  
