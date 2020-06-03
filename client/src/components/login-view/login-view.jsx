@@ -8,25 +8,32 @@ import { Link } from "react-router-dom";
 
 import "./login-view.scss";
 
+/**
+ * Enables user to login
+ * @function handleLogin
+ * @param {event}
+ * @return {object} User details
+ */
+
 export function LoginView(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = e => {
+  const handleLogin = (e) => {
     e.preventDefault();
     console.log("multiple");
     axios
       .post("https://movieswithmichaelf.herokuapp.com/login", {
         Username: username,
-        Password: password
+        Password: password,
       })
       // Send a request to the server for authentication then call props.onLoggedIn(username)
-      .then(response => {
+      .then((response) => {
         const data = response.data;
         console.log("Logged in", data);
         props.onLoggedIn(data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log("no such user");
         return alert("Invalid username or password. Please try again");
       });
@@ -42,7 +49,7 @@ export function LoginView(props) {
             type="text"
             placeholder="Enter username"
             value={username}
-            onChange={e => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <Form.Control.Feedback type="invalid">
             Please choose a username.
@@ -55,7 +62,7 @@ export function LoginView(props) {
             type="password"
             placeholder="Password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
         <Button variant="primary" id="loginButton" onClick={handleLogin}>
@@ -75,5 +82,5 @@ export function LoginView(props) {
 }
 
 LoginView.propTypes = {
-  onLoggedIn: PropTypes.func.isRequired
+  onLoggedIn: PropTypes.func.isRequired,
 };

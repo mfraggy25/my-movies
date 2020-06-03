@@ -6,6 +6,11 @@ import "./director-view.scss";
 
 import { Link } from "react-router-dom";
 
+/**
+ * Director information view
+ * @param {string} props - this.props director.Name
+ * @returns {DirectorView}
+ */
 export class DirectorView extends React.Component {
   constructor() {
     super();

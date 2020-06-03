@@ -6,6 +6,12 @@ import "./genre-view.scss";
 
 import { Link } from "react-router-dom";
 
+/**
+ * Genre information view
+ * @param {string} props - this.props genre.Description
+ * @returns {GenreView}
+ */
+
 export class GenreView extends React.Component {
   constructor() {
     super();

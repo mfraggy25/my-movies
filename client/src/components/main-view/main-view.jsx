@@ -33,43 +33,56 @@ export class MainView extends React.Component {
       user: null,
       email: "",
       birthday: "",
-      userInfo: {}
+      userInfo: {},
     };
   }
 
+  /**
+   * gets list of movies
+   * @function getMovies
+   * @param {number} token
+   * @returns {array}
+   */
   getMovies(token) {
     axios
       .get("https://movieswithmichaelf.herokuapp.com/movies", {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       })
-      .then(response => {
+      .then((response) => {
         // Assign the result to the state
         this.setState({
-          movies: response.data
+          movies: response.data,
         });
         localStorage.setItem("movies", JSON.stringify(response.data));
         this.props.setMovies(response.data);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }
 
+  /**
+   * gets list of users
+   * @function getUser
+   * @param {number} token
+   * @returns {object}
+   */
+
   getUser(token) {
     axios
       .get("https://movieswithmichaelf.herokuapp.com/users", {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       })
-      .then(response => {
+      .then((response) => {
         console.log(response);
         this.setState({
           email: response.data.Email,
           birthday: response.data.Birthday,
           token: token,
-          userInfo: response.data
+          userInfo: response.data,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -79,7 +92,7 @@ export class MainView extends React.Component {
     let accessToken = localStorage.getItem("token");
     if (accessToken !== null) {
       this.setState({
-        user: localStorage.getItem("user")
+        user: localStorage.getItem("user"),
       });
       this.getMovies(accessToken);
       this.getUser(localStorage.getItem("user"), accessToken);
@@ -89,15 +102,20 @@ export class MainView extends React.Component {
   onMovieClick(movie) {
     window.location.hash = "#" + movie._id;
     this.setState({
-      selectedMovieId: movie._id
+      selectedMovieId: movie._id,
     });
   }
 
-  // onLoggedIn() updates user state of MainView, will be called when user has logged in.
-  // Parameter authData gives user and token
+  /** updates user state of MainView, will be called when user has logged in
+   * @function onLoggedIn
+   * @param {object} authData gives user and token
+   * @returns {state}
+   * @returns {localStorage}
+   */
+
   onLoggedIn(authData) {
     this.setState({
-      user: authData.user.Username
+      user: authData.user.Username,
     });
     // Auth information (= user + token) received from handleLogin method has been saved in localStorage.
     // setItem method accepts two arguments (key and value)
@@ -106,22 +124,33 @@ export class MainView extends React.Component {
     // Will get the movies from the API once user is logged in
     this.getMovies(authData.token);
     this.setState({
-      userInfo: authData.user
+      userInfo: authData.user,
     });
   }
+
+  /**
+   * @function handleLogout
+   * @returns {localStorage} removes item
+   */
 
   handleLogout() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     this.setState({
-      user: null
+      user: null,
     });
     window.open("/client", "_self");
   }
 
+  /**
+   * @function handleProfileUpdate
+   * @param data
+   * @returns {localStorage}
+   */
+
   handleProfileUpdate(data) {
     this.setState({
-      userInfo: data
+      userInfo: data,
     });
     localStorage.setItem("user", data.username);
   }
@@ -138,7 +167,7 @@ export class MainView extends React.Component {
               exact
               path="/"
               render={() => (
-                <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+                <LoginView onLoggedIn={(user) => this.onLoggedIn(user)} />
               )}
             />
             <Route path="/register" render={() => <RegistrationView />} />
@@ -166,7 +195,7 @@ export class MainView extends React.Component {
                   path="/movies/:movieId"
                   render={({ match }) => (
                     <MovieView
-                      movie={movies.find(m => m._id === match.params.movieId)}
+                      movie={movies.find((m) => m._id === match.params.movieId)}
                     />
                   )}
                 />
@@ -179,7 +208,7 @@ export class MainView extends React.Component {
                       <DirectorView
                         director={
                           movies.find(
-                            m => m.Director.Name === match.params.name
+                            (m) => m.Director.Name === match.params.name
                           ).Director
                         }
                       />
@@ -194,7 +223,7 @@ export class MainView extends React.Component {
                     return (
                       <GenreView
                         genre={
-                          movies.find(m => m.Genre.Name === match.params.name)
+                          movies.find((m) => m.Genre.Name === match.params.name)
                             .Genre
                         }
                       />
@@ -214,7 +243,7 @@ export class MainView extends React.Component {
                       userInfo={userInfo}
                       user={user}
                       token={token}
-                      updateUser={data => this.handleProfileUpdate(data)}
+                      updateUser={(data) => this.handleProfileUpdate(data)}
                     />
                   )}
                 />
@@ -227,11 +256,11 @@ export class MainView extends React.Component {
   }
 }
 
-let mapStateToProps = state => {
+let mapStateToProps = (state) => {
   return { movies: state.movies, loggedInUser: state.loggedInUser };
 };
 const mapDispatchToProps = {
   setMovies,
-  setLoggedUser
+  setLoggedUser,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(MainView);

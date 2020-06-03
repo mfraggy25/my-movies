@@ -9,27 +9,32 @@ import { Link } from "react-router-dom";
 // imports for files to bundle
 import "./registration-view.scss";
 
+/**
+ * @function RegistrationView
+ * @param props
+ * @returns {string}
+ */
 export function RegistrationView(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [birthday, setBirthday] = useState("");
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     axios
       .post("https://movieswithmichaelf.herokuapp.com/users", {
         Username: username,
         Password: password,
         Email: email,
-        Birthday: birthday
+        Birthday: birthday,
       })
-      .then(response => {
+      .then((response) => {
         const data = response.data;
         alert("Registration was successful. Please log in");
         window.open("/client", "_self"); // the second argument '_self' is necessary so that the page will open in the current tab
       })
-      .catch(e => {
+      .catch((e) => {
         console.log("error registering the user");
         alert("Unable to register, please try again.");
       });
@@ -44,7 +49,7 @@ export function RegistrationView(props) {
             type="email"
             placeholder="Enter email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Form.Text className="text-muted">
             We'll never share your email with anyone else.
@@ -57,7 +62,7 @@ export function RegistrationView(props) {
             type="text"
             placeholder="Enter username"
             value={username}
-            onChange={e => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <Form.Control.Feedback type="invalid">
             Please choose a username.
@@ -70,7 +75,7 @@ export function RegistrationView(props) {
             type="password"
             placeholder="Password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
 
@@ -81,7 +86,7 @@ export function RegistrationView(props) {
             placeholder="01/01/1990"
             value={birthday}
             value={birthday}
-            onChange={e => setBirthday(e.target.value)}
+            onChange={(e) => setBirthday(e.target.value)}
           />
         </Form.Group>
 
