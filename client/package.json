@@ -5,7 +5,7 @@
     "sass": "^1.24.4"
   },
   "dependencies": {
-    "axios": "^0.19.1",
+    "axios": "^0.21.1",
     "prop-types": "^15.7.2",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-redux": "^7.1.3",
